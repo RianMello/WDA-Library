@@ -22,10 +22,7 @@ export const BooksContext = createContext<BookContextProps>(
 
 export function BooksProvider({ children }: BookProviderProps) {
   const [books, setBooks] = useState<Book[]>([]);
-  const [sortedList, setSortedList] = useState<Book[]>([]);
   const [load, setLoad] = useState(true);
-
-  const [asc, SetAsc] = useState(false);
 
   const { t } = useTranslation("common");
 

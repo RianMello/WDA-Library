@@ -67,14 +67,11 @@ const Books = () => {
           <h1>Book Listing</h1>
         </div>
         {load !== true ? (
-          <>
-            <Table columns={columns} data={data} />
-          </>
+          <Table columns={columns} data={data} />
         ) : (
           <h1>loading</h1>
         )}
       </div>
-      <br />
     </div>
   );
 };

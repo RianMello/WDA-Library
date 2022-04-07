@@ -3,6 +3,8 @@ import { useMemo } from "react";
 import Table from "../components/Tables";
 import { useUser } from "../hooks/useUser";
 
+import styles from "./users.module.scss";
+
 export default function Users() {
   const { load, users } = useUser();
 
@@ -44,12 +46,16 @@ export default function Users() {
   }, [users]);
 
   return (
-    <div>
+    <div className={styles.container}>
       <Head>
         <title>Library-Users</title>
       </Head>
-      <h1>Users</h1>
-      {load ? <h1>Loading</h1> : <Table columns={COLUMNS} data={data} />}
+      <div className={styles.content}>
+        <div className={styles.titleContent}>
+          <h1>User Listing</h1>
+        </div>
+        {load ? <h1>Loading</h1> : <Table columns={COLUMNS} data={data} />}
+      </div>
     </div>
   );
 }
