@@ -1,0 +1,96 @@
+{
+    "translation":{
+        "waitingData": "Please wait while the data loads",
+        "actions":"Actions",
+        "filter": "Filter",
+        "book":{
+            "book": "Book",
+            "books": "Books",
+            "bookRecords": "Book Records",
+            "tableTitle": "Table of Books",
+            "name": "Name",
+            "release":"Release",
+            "author":"Author",
+            "copies": "Copies",
+            "amount": "Amount",
+            "rented": "Rented",
+            "impedimentBook": "We have a copy of the book that is still rented, so we cannot delete your record",
+            "form":{
+                "add":"Add new book",
+                "edit":"Edit book",
+                "bookName": "Book title"
+            }
+        },
+        "publisher":{
+            "publisher": "Publisher",
+            "publishers": "Publishers",
+            "name": "Name",
+            "cityMain": "Main City",
+            "tableTitle": "Table of Publishers",
+            "impedimentPub": "There is a book by this publisher that has not yet been returned, so we cannot delete this record.",
+            "deletePublisher": "Are you sure you want to delete the record for this Publisher Company?",
+            "form":{
+                "add":"Add new Publisher",
+                "edit":"Edit Publisher",
+                "publisherName": "Publishing Company Name"
+            }
+        },
+        "user": {
+            "user": "User",
+            "users": "Users",
+            "name": "Name",
+            "address": "Address",
+            "email":"E-mail",
+            "city": "City",
+            "tableTitle": "Table of Users",
+            "form":{
+                "add":"Add new user",
+                "edit":"Edit user",
+                "userName": "User name"
+            },
+            "modal": {
+                "impediment": "This user's record cannot be deleted yet as he has an unreturned book",
+                "deleteSure": "Are you sure you want to delete the record for this User?"
+            }
+        },
+        "rental":{
+            "rental": "Rental",
+            "rentals": "Rentals",
+            "responsible": "Responsible",
+            "rentalDate": "Date of Rental",
+            "deadline": "Deadline",
+            "situation":"Situation",
+            "giveBack": "Give Back",
+            "tableTitle": "Table of Rentals",
+            "form":{
+                "add":"Add new Rental"
+            }
+        },
+        "dashboard":{
+            "dashboard": "Dashboard",
+            "inventory": "Inventory",
+            "lastRentals": "Last Rentals",
+            "noRental": "No Rentals today",
+            "mostRented": "Most Rented",
+            "titles": "Titles",
+            "noReturned": "No Returned",
+            "today": "Today"
+        },
+        "sureDelete": {
+            "options": {
+                "no": "No",
+                "yes": "Yes"
+            },
+            "returnBook": "Are you sure you want to mark the book as returned?",
+            "deleteBook":"Are you sure you want to delete the record for this book?",
+            "deleteUser": "Are you sure you want to delete the record for this User?",
+            "deleteRent": "Are you sure you want to delete this rental record?",
+            "deletePublisher": "Are you sure you want to delete the record for this Publisher Company?"
+        },
+        "form":{
+            "cancel": "Cancel",
+            "save": "Save"
+        }
+        
+    }
+}

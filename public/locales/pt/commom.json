@@ -1,0 +1,97 @@
+{
+    "translation": {
+        "waitingData": "Por Favor, aguarde enquanto os dados são carregados",
+        "actions":"Ações",
+        "filter": "Filtro",
+        "book":{
+            "book": "Livro",
+            "books": "Livros",
+            "bookRecords": "Livros registrados",
+            "tableTitle": "Tabela de Livros",
+            "name": "Título",
+            "release":"Lançamento",
+            "author":"Autor",
+            "copies": "Copias",
+            "amount": "Quantiadade",
+            "rented": "Alugados",
+            "impedimentBook": "Temos uma cópia do livro que ainda está alugada, por isso não podemos excluir seu registro",
+            "form":{
+                "add":"Adicionar novo livro",
+                "edit":"Editar Livro",
+                "bookName": "Título do livro"
+            }
+        },
+        "publisher":{
+            "publisher": "Editora",
+            "publishers": "Editoras",
+            "name": "Nome",
+            "cityMain": "Cidade sede",
+            "tableTitle": "Tabela de Editoras",
+            "impedimentPub": "Há um livro desta editora que ainda não foi devolvido, por isso não podemos excluir este registro.",
+            "deletePublisher": "Tem certeza de que deseja excluir o registro desta Empresa Editora?",
+            "form":{
+                "add":"Adicionar nova Editora",
+                "edit":"Editar editora",
+                "publisherName": "Nome da Editora"
+            }
+        },
+        "user": {
+            "user": "Usuário",
+            "users": "Usuários",
+            "name": "Nome",
+            "address": "Endereço",
+            "email":"E-mail",
+            "city": "Cidade",
+            "tableTitle": "Tabela de Usuários",
+            "form":{
+                "add":"Adiocionar novo Usuário",
+                "edit":"Editar Usuário",
+                "userName": "Nome do Usuário"
+            },
+            "modal": {
+                "impediment": "O registro deste usuário ainda não pode ser excluído porque ele tem um livro não devolvido.",
+                "deleteSure": "Tem certeza de que deseja excluir o registro deste usuário?"
+            }
+        },
+        "rental":{
+            "rental": "Aluguel",
+            "rentals": "Aluguéis",
+            "responsible": "Responsável",
+            "rentalDate": "Data do Aluguel",
+            "deadline": "Data Prazo",
+            "situation":"Situação",
+            "giveBack": "Devolver",
+            "tableTitle": "Tabela de Aluguéis",
+            "form":{
+                "add":"Adicionar novo Aluguel"
+            }
+        },
+        "dashboard":{
+            "dashboard": "Painel",
+            "inventory": "Estoque",
+            "lastRentals": "Últimos aluguéis",
+            "noRental": "Sem aluguéis hoje",
+            "mostRented": "Mais Alugados",
+            "titles": "Titulos",
+            "noReturned": "Não devolvidos",
+            "today": "Hoje"
+        },
+        "sureDelete": {
+            "options": {
+                "no": "Não",
+                "yes": "Sim"
+            },
+            "returnBook": "Tem certeza de que deseja marcar o livro como devolvido?",
+            "deleteBook": "Tem certeza de que deseja excluir o registro deste livro?",
+            "deleteUser": "Tem certeza de que deseja excluir o registro deste usuário?",
+            "deleteRent": "Tem certeza de que deseja excluir este registro de aluguel?",
+            "deletePublisher": "Tem certeza de que deseja excluir o registro desta Empresa Editora?"
+        },
+        "form":{
+            "cancel": "Cancelar",
+            "save": "Salvar"
+        }
+        
+
+    }
+}
