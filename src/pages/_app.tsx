@@ -6,6 +6,7 @@ import { BooksProvider } from "../contexts/BooksContext";
 import { UserProvider } from "../contexts/UsersContext";
 import { PublisherProvider } from "../contexts/PublishersContext";
 import { appWithTranslation } from "next-i18next";
+import { RentalProvider } from "../contexts/RentalsContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <BooksProvider>
         <UserProvider>
           <PublisherProvider>
-            <Component {...pageProps} />
+            <RentalProvider>
+              <Component {...pageProps} />
+            </RentalProvider>
           </PublisherProvider>
         </UserProvider>
       </BooksProvider>
