@@ -12,8 +12,6 @@ interface BookProviderProps {
 interface BookContextProps {
   load: boolean;
   books: Book[];
-  TableRows: TableRows[];
-  handleSortedList: (orderBy: string) => Book[];
 }
 
 export const BooksContext = createContext<BookContextProps>(
@@ -36,30 +34,8 @@ export function BooksProvider({ children }: BookProviderProps) {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleSortedList = (orderBy: string) => {
-    var sorted = books;
-
-    return sorted;
-  };
-
-  const TableRows = books.map((book) => {
-    let tdRows = [
-      book.id,
-      book.nome,
-      book.autor,
-      book.editora.nome,
-      book.lancamento,
-      book.quantidade,
-      book.totalalugado,
-    ];
-    return {
-      trId: book.id,
-      trContent: tdRows,
-    };
-  });
-
   return (
-    <BooksContext.Provider value={{ books, load, TableRows, handleSortedList }}>
+    <BooksContext.Provider value={{ books, load }}>
       {children}
     </BooksContext.Provider>
   );

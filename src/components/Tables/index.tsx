@@ -2,9 +2,12 @@ import { useTable, useSortBy, useGlobalFilter } from "react-table";
 
 import { HiSortAscending, HiSortDescending } from "react-icons/hi";
 import TablePaginationUnstyled from "@mui/base/TablePaginationUnstyled";
+
 import styles from "./style.module.scss";
 import { styled } from "@mui/system";
 import { useState } from "react";
+
+import Modal from "../Modal";
 
 const CustomTablePagination = styled(TablePaginationUnstyled)(
   ({ theme }) => `
