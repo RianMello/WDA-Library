@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { BooksProvider } from "../contexts/BooksContext";
 import { UserProvider } from "../contexts/UsersContext";
+import { PublisherProvider } from "../contexts/PublishersContext";
 import { appWithTranslation } from "next-i18next";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -12,7 +13,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Header />
       <BooksProvider>
         <UserProvider>
-          <Component {...pageProps} />
+          <PublisherProvider>
+            <Component {...pageProps} />
+          </PublisherProvider>
         </UserProvider>
       </BooksProvider>
       <Footer />

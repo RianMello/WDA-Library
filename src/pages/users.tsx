@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import Table from "../components/Tables";
 import { useUser } from "../hooks/useUser";
 
-import styles from "./users.module.scss";
+import styles from "./pages.module.scss";
 
 export default function Users() {
   const { load, users } = useUser();

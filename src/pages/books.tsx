@@ -1,11 +1,10 @@
-import { style } from "@mui/system";
 import Head from "next/head";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Column } from "react-table";
 import Table from "../components/Tables";
 import { useBook } from "../hooks/useBook";
 
-import styles from "./books.module.scss";
+import styles from "./pages.module.scss";
 
 const Books = () => {
   const { load, books } = useBook();

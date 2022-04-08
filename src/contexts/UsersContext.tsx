@@ -1,6 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { User } from "../interfaces/ResponseAPI";
-import { TableRows } from "../interfaces/toUse";
 
 import api from "../services/api";
 

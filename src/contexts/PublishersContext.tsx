@@ -3,36 +3,35 @@ import { Publisher } from "../interfaces/ResponseAPI";
 
 import api from "../services/api";
 
-interface PublisherProvider {
+interface PublisherProviderProps {
   children: ReactNode;
 }
-
 interface PublisherContextProps {
   load: boolean;
-  publisher: Publisher[];
+  publishers: Publisher[];
 }
 
-export const PublisherContext = createContext<PublisherContextProps>(
+export const PublishersContext = createContext<PublisherContextProps>(
   {} as PublisherContextProps
 );
 
-export function PublisherProvider({ children }: PublisherProvider) {
+export function PublisherProvider({ children }: PublisherProviderProps) {
+  const [publishers, setPublishers] = useState<Publisher[]>([]);
   const [load, setLoad] = useState(true);
-  const [publisher, setPublisher] = useState<Publisher[]>([]);
 
   useEffect(() => {
     api
       .get("/api/editoras")
       .then((res) => {
         setLoad(false);
-        setPublisher(res.data);
+        setPublishers(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
   return (
-    <PublisherContext.Provider value={{ load, publisher }}>
+    <PublishersContext.Provider value={{ load, publishers }}>
       {children}
-    </PublisherContext.Provider>
+    </PublishersContext.Provider>
   );
 }
