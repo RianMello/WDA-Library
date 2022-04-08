@@ -24,4 +24,4 @@ const ModalComponent = ({ children }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default ModalComponent;
