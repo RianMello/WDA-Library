@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useMemo } from "react";
+import { Column } from "react-table";
 import Table from "../components/Tables/";
 import { useRental } from "../hooks/useRental";
 
@@ -8,7 +9,7 @@ import styles from "./pages.module.scss";
 export default function Rentals() {
   const { load, rentals } = useRental();
 
-  const COLUMNS = useMemo(
+  const COLUMNS: Column[] = useMemo(
     () => [
       {
         Header: "ID",
@@ -43,16 +44,14 @@ export default function Rentals() {
   );
 
   const data = useMemo(() => {
-    rentals.map((rent) => {
-      return {
-        ...rent,
-        data_devolucao:
-          rent.data_devolucao === null ? "Não devolvido" : rent.data_devolucao,
-        livro_id: rent.livro_id.nome,
-        usuario_id: rent.usuario_id.nome,
-        actions: "Edit/Delete",
-      };
-    });
+    rentals.map((rent) => ({
+      ...rent,
+      data_devolucao:
+        rent.data_devolucao === null ? "Não devolvido" : rent.data_devolucao,
+      livro_id: rent.livro_id.nome,
+      usuario_id: rent.usuario_id.nome,
+      actions: "Edit/Delete",
+    }));
   }, [rentals]);
 
   return (

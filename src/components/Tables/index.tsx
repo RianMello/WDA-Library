@@ -15,6 +15,7 @@ import { TableFilter } from "./Filter";
 
 import Modal from "../Modal";
 import ModalComponent from "../Modal";
+import { FormBook } from "../Form/BookForm";
 
 const CustomTablePagination = styled(TablePaginationUnstyled)(
   ({ theme }) => `
@@ -114,7 +115,7 @@ const Table = ({ columns, data }: any) => {
   const handleOpenModal = () => {
     setIsOpen(true);
   };
-  const handleCloseModal = () => {
+  const handleModalClose = () => {
     setIsOpen(false);
   };
 
@@ -122,7 +123,13 @@ const Table = ({ columns, data }: any) => {
   return (
     <table className={styles.tableContainer} {...getTableProps()}>
       {isOpen ? (
-        <ModalComponent onClose={handleCloseModal} isOpen={isOpen} />
+        <ModalComponent
+          FormId="BookAdd"
+          onClose={handleModalClose}
+          isOpen={isOpen}
+        >
+          <></>
+        </ModalComponent>
       ) : (
         ""
       )}

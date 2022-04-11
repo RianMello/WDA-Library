@@ -1,12 +1,20 @@
+import { TextField } from "@mui/material";
+
 export const TableFilter = ({ filter, setFilter }: any) => {
   return (
     <span>
-      <label>Filter: </label>
-      <input
+      <TextField
+        id="outlined-basic"
+        label="Filter"
+        variant="outlined"
+        value={filter || ""}
+        onChange={(e) => setFilter(e.currentTarget.value)}
+      />
+      {/* <input
         value={filter || ""}
         onChange={(e) => setFilter(e.currentTarget.value)}
         placeholder="..."
-      ></input>
+      ></input> */}
     </span>
   );
 };

@@ -11,6 +11,8 @@ interface BookProviderProps {
 interface BookContextProps {
   load: boolean;
   books: Book[];
+  addBook: (book: Book, onFinish: () => void) => void;
+  editBook: (book: Book) => void;
 }
 
 export const BooksContext = createContext<BookContextProps>(
@@ -33,8 +35,25 @@ export function BooksProvider({ children }: BookProviderProps) {
       .catch((err) => console.log(err));
   }, []);
 
+  function addBook(book: Book, onFinish: () => void) {
+    api
+      .post("/api/livro", book)
+      .then(() => {
+        onFinish();
+      })
+      .catch((err) => {
+        if (err.message === "Request failed with status code 400") {
+          alert("Book already registered! Check the data and try again");
+        }
+      });
+  }
+
+  function editBook(book: Book) {
+    api.put("/api/livro", book).then(() => console.log("Book updated"));
+  }
+
   return (
-    <BooksContext.Provider value={{ books, load }}>
+    <BooksContext.Provider value={{ books, load, addBook, editBook }}>
       {children}
     </BooksContext.Provider>
   );
