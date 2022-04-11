@@ -3,6 +3,7 @@ import { ErrorMessage, Field } from "formik";
 import { useState } from "react";
 import { Book, Publisher } from "../../interfaces/ResponseAPI";
 // import { SelectContainer } from "./style";
+import styles from "./styles.module.scss";
 
 interface SelectProps {
   book?: Book;
@@ -14,12 +15,12 @@ export function Select({ book, publishers, pubChange }: SelectProps) {
   const [publisher, setPublisher] = useState(publishers[0]);
 
   return (
-    <>
-      <label htmlFor="editora_id">Publisher Company:</label>
+    <div className={styles.selectContainer}>
+      <label htmlFor="editora_id">Publisher Company *:</label>
       <Field
         as="select"
         id="editora_id"
-        name={publisher.id}
+        name={publisher.id || ""}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           publishers.map((pub) => {
             if (pub.id === Number(e.target.value)) {
@@ -29,7 +30,7 @@ export function Select({ book, publishers, pubChange }: SelectProps) {
           });
         }}
       >
-        <option className="placeholder-select"></option>
+        <option value="" className="placeholder-select"></option>
         {publishers.map((pub) => {
           if (book?.id && book?.editora.id === pub.id) {
             return (
@@ -45,7 +46,11 @@ export function Select({ book, publishers, pubChange }: SelectProps) {
           );
         })}
       </Field>
-      <ErrorMessage name="editora" />
-    </>
+      <ErrorMessage
+        component="span"
+        className={styles.errorMessage}
+        name="editora_id"
+      />
+    </div>
   );
 }

@@ -10,11 +10,6 @@ export const TableFilter = ({ filter, setFilter }: any) => {
         value={filter || ""}
         onChange={(e) => setFilter(e.currentTarget.value)}
       />
-      {/* <input
-        value={filter || ""}
-        onChange={(e) => setFilter(e.currentTarget.value)}
-        placeholder="..."
-      ></input> */}
     </span>
   );
 };

@@ -71,7 +71,12 @@ const Books = () => {
       ...book,
       editora_id: book.editora.nome,
       actions: (
-        <button onClick={() => handleModalOpen()}>
+        <button
+          onClick={() => {
+            handleModalOpen();
+            setBookToEdited(book);
+          }}
+        >
           <MdEditNote />
         </button>
       ),
@@ -90,6 +95,7 @@ const Books = () => {
     <div className={styles.container}>
       {isOpen ? (
         <ModalComponent
+          title="Edit Book"
           FormId="BookAdd"
           onClose={handleModalClose}
           isOpen={isOpen}

@@ -16,6 +16,7 @@ import { TableFilter } from "./Filter";
 import Modal from "../Modal";
 import ModalComponent from "../Modal";
 import { FormBook } from "../Form/BookForm";
+import { Book } from "../../interfaces/ResponseAPI";
 
 const CustomTablePagination = styled(TablePaginationUnstyled)(
   ({ theme }) => `
@@ -84,7 +85,10 @@ const CustomTablePagination = styled(TablePaginationUnstyled)(
 const Table = ({ columns, data }: any) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const [isOpen, setIsOpen] = useState(false);
+  const [bookToEdited, setBookToEdited] = useState({} as Book);
+  const [isEdit, setIsEdit] = useState(false);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
@@ -112,7 +116,7 @@ const Table = ({ columns, data }: any) => {
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
-  const handleOpenModal = () => {
+  const handleModalOpen = () => {
     setIsOpen(true);
   };
   const handleModalClose = () => {
@@ -124,11 +128,12 @@ const Table = ({ columns, data }: any) => {
     <table className={styles.tableContainer} {...getTableProps()}>
       {isOpen ? (
         <ModalComponent
+          title="Add Book"
           FormId="BookAdd"
           onClose={handleModalClose}
           isOpen={isOpen}
         >
-          <></>
+          <FormBook onFinish={handleModalClose} book={bookToEdited} />
         </ModalComponent>
       ) : (
         ""
@@ -138,7 +143,11 @@ const Table = ({ columns, data }: any) => {
           <td colSpan={columns.length}>
             <div className={styles.tdInput}>
               <button
-                onClick={() => handleOpenModal()}
+                onClick={() => {
+                  handleModalOpen();
+                  setBookToEdited({} as Book);
+                  setIsEdit(false);
+                }}
                 className={styles.buttonAdd}
               >
                 Add

@@ -4,7 +4,14 @@ import { Book, Publisher } from "../../interfaces/ResponseAPI";
 
 // import { ContainerForm } from "../../../../styles/formsStyles";
 import { usePublisher } from "../../hooks/usePublisher";
-import { Formik, FormikHelpers, Form, Field, ErrorMessage } from "formik";
+import {
+  Formik,
+  FormikHelpers,
+  Form,
+  Field,
+  ErrorMessage,
+  useFormik,
+} from "formik";
 import * as Yup from "yup";
 import { Select } from "./Select";
 import { useState } from "react";
@@ -12,6 +19,8 @@ import { IoMdSave } from "react-icons/io";
 import { TiCancel } from "react-icons/ti";
 
 import { useTranslation } from "react-i18next";
+import { Button, TextField } from "@mui/material";
+import styles from "./styles.module.scss";
 
 interface PropsFormBook {
   onFinish: () => void;
@@ -41,15 +50,13 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
       id: Yup.number(),
       nome: Yup.string(),
       cidade: Yup.string(),
-    }),
+    }).required("Voê deve informar a editora do livro"),
     editora_id: Yup.number().required("Voê deve informar a editora do livro"),
     totalalugado: Yup.number(),
   });
 
   const { addBook, editBook } = useBook();
   const { publishers } = usePublisher();
-
-  const { t } = useTranslation();
 
   const today = dayjs().format("YYYY-MM-DD");
   const [publisher, setPublisher] = useState<Publisher>(
@@ -104,8 +111,71 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
     }
   };
 
+  const formik = useFormik({
+    initialValues: initialValue,
+    validationSchema: schema,
+    onSubmit: (values, { setSubmitting }: FormikHelpers<initialProps>) => {
+      handleSubmit(values);
+      setSubmitting(false);
+    },
+  });
   return (
-    <>
+    <div className={styles.formContainer}>
+      {/* <form onSubmit={formik.handleSubmit}>
+        <TextField
+          id="name"
+          variant="filled"
+          fullWidth
+          required
+          name="nome"
+          label="Name"
+          value={formik.values.nome}
+          onChange={formik.handleChange}
+          error={formik.touched.nome && Boolean(formik.errors.nome)}
+          helperText={formik.touched.nome && formik.errors.nome}
+          sx={{ color: "red", background: "var(--blue-g100)" }}
+        />
+        <TextField
+          id="autor"
+          variant="filled"
+          required
+          fullWidth
+          name="autor"
+          label="Autor"
+          value={formik.values.autor}
+          onChange={formik.handleChange}
+          error={formik.touched.autor && Boolean(formik.errors.autor)}
+          helperText={formik.touched.autor && formik.errors.autor}
+        />
+        <TextField
+          id="release"
+          type="date"
+          variant="filled"
+          required
+          fullWidth
+          name="release"
+          label="Release year"
+          value={formik.values.lancamento}
+          onChange={formik.handleChange}
+          error={formik.touched.lancamento && Boolean(formik.errors.lancamento)}
+          helperText={formik.touched.lancamento && formik.errors.lancamento}
+        />
+        <TextField
+          id="name"
+          variant="filled"
+          required
+          fullWidth
+          name="nome"
+          label="Name"
+          value={formik.values.nome}
+          onChange={formik.handleChange}
+          error={formik.touched.nome && Boolean(formik.errors.nome)}
+          helperText={formik.touched.nome && formik.errors.nome}
+        />
+        <Button color="primary" variant="contained" type="submit">
+          Submit
+        </Button>
+      </form> */}
       <Formik
         initialValues={initialValue}
         validationSchema={schema}
@@ -115,27 +185,41 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
         }}
       >
         <Form>
-          <div className="input-group">
-            <label htmlFor="nome">{t("book.form.bookName")}:</label>
+          <div className={styles["input-group"]}>
+            <label htmlFor="nome">Name *:</label>
+
             <Field id="nome" name="nome" type="text" />
             <ErrorMessage
               component="span"
-              className="errorMessage"
+              className={styles.errorMessage}
               name="nome"
             />
           </div>
-          <div className="input-group">
-            <label htmlFor="autor">{t("book.author")}:</label>
-            <Field id="autor" name="autor" type="text" />
-            <ErrorMessage
-              component="span"
-              className="errorMessage"
-              name="autor"
-            />
-          </div>
-          <div className="input-group-two">
+          <div className={styles["input-group-two"]}>
             <div>
-              <label htmlFor="lancamento">{t("book.release")}:</label>
+              <label htmlFor="autor">Author *:</label>
+              <Field id="autor" name="autor" type="text" />
+              <ErrorMessage
+                component="span"
+                className={styles.errorMessage}
+                name="autor"
+              />
+            </div>
+            <Select
+              key={book?.id}
+              book={book}
+              publishers={publishers}
+              pubChange={handlePublisherChange}
+            />
+            {/* <ErrorMessage
+              component="span"
+              className={styles.errorMessage}
+              name="editora_id"
+            /> */}
+          </div>
+          <div className={styles["input-group-two"]}>
+            <div>
+              <label htmlFor="lancamento">Release year *:</label>
               <Field
                 id="lancamento"
                 name="lancamento"
@@ -144,45 +228,32 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
               />
               <ErrorMessage
                 component="span"
-                className="errorMessage"
+                className={styles.errorMessage}
                 name="lancamento"
               />
             </div>
             <div>
-              <label htmlFor="quantidade">{t("book.amount")}:</label>
+              <label htmlFor="quantidade">Amount *:</label>
               <Field id="quantidade" name="quantidade" type="number" />
               <ErrorMessage
                 component="span"
-                className="errorMessage"
+                className={styles.errorMessage}
                 name="quantidade"
               />
             </div>
           </div>
-          <div className="input-group">
-            <Select
-              key={book?.id}
-              book={book}
-              publishers={publishers}
-              pubChange={handlePublisherChange}
-            />
-            <ErrorMessage
-              component="span"
-              className="errorMessage"
-              name="editora_id"
-            />
-          </div>
-          <div className="control-modalForm">
-            <button className="btn-cancel" onClick={onFinish}>
+          <div className={styles["control-modalForm"]}>
+            <button className={styles["btn-cancel"]} onClick={onFinish}>
               <TiCancel />
-              {t("form.cancel")}
+              Cancel
             </button>
-            <button className="btn-save" type="submit">
+            <button className={styles["btn-save"]} type="submit">
               <IoMdSave />
-              {t("form.save")}
+              Save
             </button>
           </div>
         </Form>
       </Formik>
-    </>
+    </div>
   );
 }
