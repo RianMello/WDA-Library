@@ -16,11 +16,11 @@ export default function Rentals() {
       },
       {
         Header: "Responsible",
-        accessor: "usuario",
+        accessor: "usuario_id",
       },
       {
         Header: "Book Rented",
-        accessor: "livro",
+        accessor: "livro_id",
       },
       {
         Header: "Rental date",
@@ -35,10 +35,6 @@ export default function Rentals() {
         accessor: "data_devolucao",
       },
       {
-        Header: "Situation",
-        accessor: "situation",
-      },
-      {
         Header: "Actions",
         accessor: "actions",
       },
@@ -47,12 +43,16 @@ export default function Rentals() {
   );
 
   const data = useMemo(() => {
-    rentals.map((rent) => ({
-      ...rent,
-      actions: "Edit/Delete",
-      livro: rent.livro_id.nome,
-      usuario: rent.usuario_id.nome,
-    }));
+    rentals.map((rent) => {
+      return {
+        ...rent,
+        data_devolucao:
+          rent.data_devolucao === null ? "Não devolvido" : rent.data_devolucao,
+        livro_id: rent.livro_id.nome,
+        usuario_id: rent.usuario_id.nome,
+        actions: "Edit/Delete",
+      };
+    });
   }, [rentals]);
 
   return (
@@ -62,7 +62,7 @@ export default function Rentals() {
       </Head>
       <div className={styles.content}>
         <div className={styles.titleContent}>
-          <h1>Book Listing</h1>
+          <h1>Rental Listing</h1>
         </div>
         {load ? <h1>Loading...</h1> : <Table columns={COLUMNS} data={data} />}
       </div>

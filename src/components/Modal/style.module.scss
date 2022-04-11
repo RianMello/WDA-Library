@@ -1,0 +1,17 @@
+.modal{
+    width: 768px;
+    height: 492px;
+
+    background-color: var(--blue-g0);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 1rem;
+
+    transform:  translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}

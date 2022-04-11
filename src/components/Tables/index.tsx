@@ -1,4 +1,9 @@
-import { useTable, useSortBy, useGlobalFilter } from "react-table";
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  UseTableOptions,
+} from "react-table";
 
 import { HiSortAscending, HiSortDescending } from "react-icons/hi";
 import TablePaginationUnstyled from "@mui/base/TablePaginationUnstyled";
@@ -6,8 +11,10 @@ import TablePaginationUnstyled from "@mui/base/TablePaginationUnstyled";
 import styles from "./style.module.scss";
 import { styled } from "@mui/system";
 import { useState } from "react";
+import { TableFilter } from "./Filter";
 
 import Modal from "../Modal";
+import ModalComponent from "../Modal";
 
 const CustomTablePagination = styled(TablePaginationUnstyled)(
   ({ theme }) => `
@@ -76,7 +83,7 @@ const CustomTablePagination = styled(TablePaginationUnstyled)(
 const Table = ({ columns, data }: any) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  const [isOpen, setIsOpen] = useState(false);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
@@ -104,22 +111,33 @@ const Table = ({ columns, data }: any) => {
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
+  const handleOpenModal = () => {
+    setIsOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
   const { globalFilter } = state;
   return (
     <table className={styles.tableContainer} {...getTableProps()}>
+      {isOpen ? (
+        <ModalComponent onClose={handleCloseModal} isOpen={isOpen} />
+      ) : (
+        ""
+      )}
       <thead className={styles.theadContainer}>
         <tr className={styles.trHeaderContainer}>
           <td colSpan={columns.length}>
             <div className={styles.tdInput}>
-              <button className={styles.buttonAdd}>Add</button>
-              <div className={styles.inputStyle}>
-                <label>Filter:</label>
-                <input
-                  type="text"
-                  value={globalFilter || ""}
-                  onChange={(e) => setGlobalFilter(e.currentTarget.value)}
-                ></input>
-              </div>
+              <button
+                onClick={() => handleOpenModal()}
+                className={styles.buttonAdd}
+              >
+                Add
+              </button>
+
+              <TableFilter filter={globalFilter} setFilter={setGlobalFilter} />
             </div>
           </td>
         </tr>

@@ -12,15 +12,16 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Header />
-      <BooksProvider>
-        <UserProvider>
-          <PublisherProvider>
-            <RentalProvider>
+      <RentalProvider>
+        <BooksProvider>
+          <UserProvider>
+            <PublisherProvider>
               <Component {...pageProps} />
-            </RentalProvider>
-          </PublisherProvider>
-        </UserProvider>
-      </BooksProvider>
+            </PublisherProvider>
+          </UserProvider>
+        </BooksProvider>
+      </RentalProvider>
+
       <Footer />
     </>
   );

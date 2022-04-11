@@ -1,18 +1,15 @@
 import { Box, Modal, Typography } from "@mui/material";
-import { ReactNode, useState } from "react";
-
 interface ModalProps {
-  children: ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const ModalComponent = ({ children }: ModalProps) => {
-  const [open, setOpen] = useState(false);
+import styles from "./style.module.scss";
 
-  const onOpen = () => setOpen(true);
-  const onClose = () => setOpen(false);
+const ModalComponent = ({ isOpen, onClose }: ModalProps) => {
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box sx={{}}>
+    <Modal open={isOpen} onClose={onClose}>
+      <Box className={styles.modal}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Text in a modal
         </Typography>

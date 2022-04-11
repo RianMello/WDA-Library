@@ -23,6 +23,7 @@ export function RentalProvider({ children }: RentalProviderProps) {
       .then((res) => {
         setLoad(false);
         setRental(res.data);
+        console.log(res);
       })
       .catch((err) => {
         console.error(err);
