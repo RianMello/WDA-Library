@@ -13,6 +13,7 @@ interface BookContextProps {
   books: Book[];
   addBook: (book: Book, onFinish: () => void) => void;
   editBook: (book: Book) => void;
+  deleteBook: (book: Book, onFinish: () => void) => void;
 }
 
 export const BooksContext = createContext<BookContextProps>(
@@ -52,8 +53,15 @@ export function BooksProvider({ children }: BookProviderProps) {
     api.put("/api/livro", book).then(() => console.log("Book updated"));
   }
 
+  function deleteBook(book: Book, onFinish: () => void) {
+    api
+      .delete("/api/livro", { data: book })
+      .then(() => console.log("Book deleted"));
+  }
   return (
-    <BooksContext.Provider value={{ books, load, addBook, editBook }}>
+    <BooksContext.Provider
+      value={{ books, load, addBook, editBook, deleteBook }}
+    >
       {children}
     </BooksContext.Provider>
   );

@@ -3,6 +3,6 @@ import { BooksContext } from "../contexts/BooksContext";
 
 export function useBook() {
     const context = useContext(BooksContext)
-    const { load, books, addBook, editBook } = context;
-    return { load, books, addBook, editBook }
+    const { load, books, addBook, editBook, deleteBook } = context;
+    return { load, books, addBook, editBook, deleteBook }
 }

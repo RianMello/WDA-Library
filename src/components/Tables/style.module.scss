@@ -30,18 +30,18 @@
     height: 3rem;
     width: 20rem;
     font-size: 1.2rem;
+    label{
+        color: var(--white-g0);
+        margin-right: 1rem;
+    }
 
     input{
         width: 100%;
         color: var(--white);
         height: 2.5rem;
-        border-radius: 0.5rem 0.5rem 0 0;
-        border: none;
         font-size: 1.2rem;
-        background-color: var(--blue-g50);
+        
         padding: 0.5rem;
-        margin-left: 0.5rem;
-        border-bottom: 1px solid var(--blue-g200);
     }
 }
 
@@ -77,49 +77,6 @@
     padding: 0.5rem;
 }
 
-.buttonEdit{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 0.25rem;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-
-    width: 45%;
-    height: 2rem;
-   
-    font-size: 2rem;
-    color: var(--blue);
-
-    transition: background-color filter 0.3s;
-
-    &:hover{
-        filter: brightness(0.9);
-        background-color: var(--blue-g50);
-    }
-}
-.buttonDel{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    cursor: pointer;
-    width: 45%;
-    height: 2rem;
-    border-radius: 0.25rem;
-    font-size: 2rem;
-    color: var(--red);
-    background-color: transparent;
-
-    &:hover{
-        filter: brightness(0.9);
-        background-color: var(--blue-g50);
-    }
-}
 
 .thContentID{
     width: 3rem;
@@ -171,8 +128,8 @@
     width: 7rem;
     text-align: center;
     color: var(--white-g100);
-    padding: 0.5rem;
-    font-size: 0.9rem;    
+    font-size: 0.9rem;
+    height: 3rem;
 }
 
 .tdContentString{

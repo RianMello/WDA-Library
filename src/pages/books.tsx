@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useMemo, useState } from "react";
+import { DeleteConfirm } from "../components/DeleteConfirm";
 import {
   Column,
   TableOptions,
@@ -12,15 +13,18 @@ import { useBook } from "../hooks/useBook";
 import ModalComponent from "../components/Modal";
 
 import styles from "./pages.module.scss";
-import { MdEditNote } from "react-icons/md";
+import { MdEditNote, MdDeleteSweep } from "react-icons/md";
 import { TableFilter } from "../components/Tables/Filter";
 import { FormBook } from "../components/Form/BookForm";
 import { Book } from "../interfaces/ResponseAPI";
 
 const Books = () => {
-  const { load, books } = useBook();
+  const { load, books, deleteBook } = useBook();
   const [isOpen, setIsOpen] = useState(false);
+  const [currentBook, setCurrentBook] = useState({} as Book);
+  const [isToEdit, setIsToEdit] = useState(true);
   const [bookToEdited, setBookToEdited] = useState({} as Book);
+  const [bookToDelete, setBookToDelete] = useState({} as Book);
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -71,24 +75,31 @@ const Books = () => {
       ...book,
       editora_id: book.editora.nome,
       actions: (
-        <button
-          onClick={() => {
-            handleModalOpen();
-            setBookToEdited(book);
-          }}
-        >
-          <MdEditNote />
-        </button>
+        <div className={styles.actions}>
+          <button
+            className={styles.buttonEdit}
+            onClick={() => {
+              handleModalOpen();
+              setIsToEdit(true);
+              setCurrentBook(book);
+            }}
+          >
+            <MdEditNote />
+          </button>
+          <button
+            className={styles.buttonDel}
+            onClick={() => {
+              handleModalOpen();
+              setIsToEdit(false);
+              setCurrentBook(book);
+            }}
+          >
+            <MdDeleteSweep />
+          </button>
+        </div>
       ),
     }));
   }, [books]);
-
-  const { state, setGlobalFilter } = useTable(
-    { columns, data },
-    useGlobalFilter
-  );
-
-  const { globalFilter } = state;
 
   console.log(books);
   return (
@@ -100,7 +111,14 @@ const Books = () => {
           onClose={handleModalClose}
           isOpen={isOpen}
         >
-          <FormBook onFinish={handleModalClose} book={bookToEdited} />
+          {isToEdit ? (
+            <FormBook onFinish={handleModalClose} book={currentBook} />
+          ) : (
+            <DeleteConfirm
+              action={() => deleteBook(currentBook, handleModalClose)}
+              onClose={() => handleModalClose()}
+            />
+          )}
         </ModalComponent>
       ) : (
         ""
@@ -111,16 +129,6 @@ const Books = () => {
       <div className={styles.content}>
         <div className={styles.titleContent}>
           <h1>Book Listing</h1>
-        </div>
-        <div className={styles.tdInput}>
-          <button
-            onClick={() => handleModalOpen()}
-            className={styles.buttonAdd}
-          >
-            Add
-          </button>
-
-          <TableFilter filter={globalFilter} setFilter={setGlobalFilter} />
         </div>
         {load !== true ? (
           <Table columns={columns} data={data} />
