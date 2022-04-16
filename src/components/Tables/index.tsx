@@ -17,6 +17,7 @@ import Modal from "../Modal";
 import ModalComponent from "../Modal";
 import { FormBook } from "../Form/BookForm";
 import { Book } from "../../interfaces/ResponseAPI";
+import { Typography } from "@mui/material";
 
 const CustomTablePagination = styled(TablePaginationUnstyled)(
   ({ theme }) => `
@@ -124,6 +125,7 @@ const Table = ({ columns, data }: any) => {
   };
 
   const { globalFilter } = state;
+
   return (
     <table className={styles.tableContainer} {...getTableProps()}>
       {isOpen ? (
@@ -162,26 +164,34 @@ const Table = ({ columns, data }: any) => {
             {...headerGroup.getHeaderGroupProps()}
             key={headerGroup.getHeaderGroupProps().key}
           >
-            {headerGroup.headers.map((column) => (
-              <th
-                className={styles.thContent}
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                key={column.id}
-              >
-                {column.render("Header")}
-                <span>
-                  {column.isSorted ? (
-                    column.isSortedDesc ? (
-                      <HiSortDescending />
+            {headerGroup.headers.map((column) => {
+              return (
+                <th
+                  className={
+                    styles[
+                      column.render("className") !== undefined
+                        ? (column.render("className") as string)
+                        : "thContent"
+                    ]
+                  }
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  key={column.id}
+                >
+                  {column.render("Header")}
+                  <span>
+                    {column.isSorted ? (
+                      column.isSortedDesc ? (
+                        <HiSortDescending />
+                      ) : (
+                        <HiSortAscending />
+                      )
                     ) : (
-                      <HiSortAscending />
-                    )
-                  ) : (
-                    ""
-                  )}
-                </span>
-              </th>
-            ))}
+                      ""
+                    )}
+                  </span>
+                </th>
+              );
+            })}
           </tr>
         ))}
       </thead>
@@ -198,13 +208,24 @@ const Table = ({ columns, data }: any) => {
               key={row.id}
             >
               {row.cells.map((cell) => {
+                console.log(cell.column.render("classCell"));
                 return (
                   <td
-                    className={styles.tdContent}
+                    className={
+                      cell.column.render("classCell")?.toString() !== undefined
+                        ? styles[
+                            cell.column
+                              .render("classCell")
+                              ?.toString() as string
+                          ]
+                        : styles.tdContent
+                    }
                     {...cell.getCellProps()}
                     key={cell.getCellProps().key}
                   >
-                    {cell.render("Cell")}
+                    <Typography variant="body2" component="span">
+                      {cell.render("Cell")}
+                    </Typography>
                   </td>
                 );
               })}

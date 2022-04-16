@@ -1,4 +1,4 @@
-import { Box, Modal } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import { ReactNode } from "react";
 interface ModalProps {
   children: ReactNode;
@@ -21,7 +21,9 @@ const ModalComponent = ({
     <Modal open={isOpen} onClose={onClose}>
       <Box className={styles.modal}>
         <div>
-          <h1>{title}</h1>
+          <Typography variant="h2" component="h2">
+            {title}
+          </Typography>
         </div>
         {children}
       </Box>

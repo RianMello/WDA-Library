@@ -17,6 +17,7 @@ import { MdEditNote, MdDeleteSweep } from "react-icons/md";
 import { TableFilter } from "../components/Tables/Filter";
 import { FormBook } from "../components/Form/BookForm";
 import { Book } from "../interfaces/ResponseAPI";
+import { Button, Tooltip } from "@mui/material";
 
 const Books = () => {
   const { load, books, deleteBook } = useBook();
@@ -32,39 +33,57 @@ const Books = () => {
   const handleModalClose = () => {
     setIsOpen(false);
   };
+
+  // Dealing with assembling the table columns
   const columns: Column[] = useMemo(
     () => [
       {
+        Header: "Actions",
+        accessor: "actions",
+        className: "thContentAct",
+        classCell: "tdContentAct",
+      },
+      {
         Header: "ID",
         accessor: "id",
+        className: "thContentID",
+        classCell: "tdContentID",
       },
       {
         Header: "Title",
         accessor: "nome",
+        className: "thContent",
+        classCell: "tdContent",
       },
       {
         Header: "Author",
         accessor: "autor",
+        className: "thContent",
+        classCell: "tdContent",
       },
       {
         Header: "Publisher",
         accessor: "editora_id",
+        className: "thContent",
+        classCell: "tdContent",
       },
       {
         Header: "Release",
         accessor: "lancamento",
+        className: "thContent",
+        classCell: "tdContent",
       },
       {
         Header: "Amount",
         accessor: "quantidade",
+        className: "thContent",
+        classCell: "tdContent",
       },
       {
         Header: "Rented",
         accessor: "totalalugado",
-      },
-      {
-        Header: "Actions",
-        accessor: "actions",
+        className: "thContent",
+        classCell: "tdContent",
       },
     ],
     []
@@ -76,26 +95,33 @@ const Books = () => {
       editora_id: book.editora.nome,
       actions: (
         <div className={styles.actions}>
-          <button
-            className={styles.buttonEdit}
-            onClick={() => {
-              handleModalOpen();
-              setIsToEdit(true);
-              setCurrentBook(book);
-            }}
-          >
-            <MdEditNote />
-          </button>
-          <button
-            className={styles.buttonDel}
-            onClick={() => {
-              handleModalOpen();
-              setIsToEdit(false);
-              setCurrentBook(book);
-            }}
-          >
-            <MdDeleteSweep />
-          </button>
+          <Tooltip title="Edit Book">
+            <Button
+              className={styles.buttonEdit}
+              onClick={() => {
+                handleModalOpen();
+                setIsToEdit(true);
+                setCurrentBook(book);
+              }}
+            >
+              <MdEditNote style={{ width: "2rem", height: "2rem" }} />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Delete Book">
+            <Button
+              className={styles.buttonDel}
+              // disabled={book.totalalugado !== 0 ? true : false}
+              onClick={() => {
+                handleModalOpen();
+                setIsToEdit(false);
+                setCurrentBook(book);
+              }}
+            >
+              <MdDeleteSweep
+                style={{ color: "var(--red)", width: "2rem", height: "2rem" }}
+              />
+            </Button>
+          </Tooltip>
         </div>
       ),
     }));
@@ -106,7 +132,13 @@ const Books = () => {
     <div className={styles.container}>
       {isOpen ? (
         <ModalComponent
-          title="Edit Book"
+          title={
+            currentBook
+              ? isToEdit
+                ? "Edit book"
+                : " Delete this book?"
+              : "Add new book"
+          }
           FormId="BookAdd"
           onClose={handleModalClose}
           isOpen={isOpen}

@@ -67,23 +67,27 @@
     background-color: var(--blue);
 }
 
-.tdContentAct{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    color: var(--white-g100);
-    padding: 0.5rem;
-}
 
-
-.thContentID{
-    width: 3rem;
+.thContentAct{
+    width: 8rem;
     padding: 0.5rem;
     font-weight: bold;
     font-size: 1.2rem;
-    text-align: left;
+    text-align: center;
+    border-top: 1px solid var(--blue-g200);
+    background-color: var(--blue-g100);
+
+    &:hover{
+        filter: brightness(0.8);
+    }
+}
+
+.thContentID{
+    width: 4rem;
+    padding: 0.5rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
     border-top: 1px solid var(--blue-g200);
     background-color: var(--blue-g100);
 
@@ -94,7 +98,6 @@
 }
 
 .thContent{
-    max-width: 10rem;
     height: 3rem;
     font-weight: bold;
     font-size: 1.2rem;
@@ -110,41 +113,40 @@
     }
 }
 
-.thContentAct{
-    width: 7rem;
-    padding: 0.5rem;
-    font-weight: bold;
-    font-size: 1.2rem;
+
+.tdContentAct{
+    width: 8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    border-top: 1px solid var(--blue-g200);
     background-color: var(--blue-g100);
-
-    &:hover{
-        filter: brightness(0.8);
-    }
-}
-
-.tdContent{
-    width: 7rem;
-    text-align: center;
     color: var(--white-g100);
-    font-size: 0.9rem;
-    height: 3rem;
-}
-
-.tdContentString{
-    text-align: center;
-    color: var(--white-g100);
-    padding: 0.5rem;
-    font-size: 0.9rem;
+    padding: 0.5rem 0 0.5rem 0;
+    margin: 0;
 }
 
 .tdContentID{
-    text-align: left;
+    width: 3rem;
+    text-align: center;
     color: var(--white-g100);
     padding: 0.5rem;
     font-size: 0.9rem; 
     font-weight: bold;
+    
+    &:hover{
+        filter: brightness(0.8);
+        cursor: pointer;
+    }
+}
+
+.tdContent{
+    text-align: center;
+    color: var(--white-g100);
+    font-size: 0.9rem;
+    height: 3rem;
+    max-width: 100%;
 }
 
 .trContent{

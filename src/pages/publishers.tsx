@@ -11,20 +11,24 @@ const Publishers = () => {
   const COLUMNS = useMemo(
     () => [
       {
+        Header: "Actions",
+        accessor: "actions",
+        className: "thContentAct",
+      },
+      {
         Header: "ID",
         accessor: "id",
+        className: "thContentID",
       },
       {
         Header: "Name",
         accessor: "nome",
+        className: "thContent",
       },
       {
         Header: "City Main",
         accessor: "cidade",
-      },
-      {
-        Header: "Actions",
-        accessor: "actions",
+        className: "thContent",
       },
     ],
     []

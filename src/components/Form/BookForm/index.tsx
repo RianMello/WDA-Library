@@ -19,6 +19,7 @@ import { IoMdSave } from "react-icons/io";
 import { TiCancel } from "react-icons/ti";
 
 import styles from "../styles.module.scss";
+import { Button } from "@mui/material";
 
 interface PropsFormBook {
   onFinish: () => void;
@@ -241,14 +242,22 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
             </div>
           </div>
           <div className={styles["control-modalForm"]}>
-            <button className={styles["btn-cancel"]} onClick={onFinish}>
+            <Button
+              variant="outlined"
+              className={styles["btn-cancel"]}
+              onClick={onFinish}
+            >
               <TiCancel />
               Cancel
-            </button>
-            <button className={styles["btn-save"]} type="submit">
+            </Button>
+            <Button
+              variant="outlined"
+              className={styles["btn-save"]}
+              type="submit"
+            >
               <IoMdSave />
               Save
-            </button>
+            </Button>
           </div>
         </Form>
       </Formik>

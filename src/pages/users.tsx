@@ -11,28 +11,34 @@ export default function Users() {
   const COLUMNS = useMemo(
     () => [
       {
+        Header: "Actions",
+        accessor: "actions",
+        className: "thContentAct",
+      },
+      {
         Header: "ID",
         accessor: "id",
+        className: "thContentID",
       },
       {
         Header: "Name",
         accessor: "nome",
+        className: "thContent",
       },
       {
         Header: "Address",
         accessor: "endereco",
+        className: "thContent",
       },
       {
         Header: "Email",
         accessor: "email",
+        className: "thContent",
       },
       {
         Header: "City",
         accessor: "cidade",
-      },
-      {
-        Header: "Actions",
-        accessor: "actions",
+        className: "thContent",
       },
     ],
     []

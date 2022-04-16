@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from "axios";
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Book } from "../interfaces/ResponseAPI";
@@ -55,7 +56,7 @@ export function BooksProvider({ children }: BookProviderProps) {
 
   function deleteBook(book: Book, onFinish: () => void) {
     api
-      .delete("/api/livro", { data: book })
+      .delete("/api/livro", { data: book } as AxiosRequestConfig)
       .then(() => console.log("Book deleted"));
   }
   return (
