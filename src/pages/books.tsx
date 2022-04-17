@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DeleteConfirm } from "../components/DeleteConfirm";
 import { Column } from "react-table";
 import Table from "../components/Tables";
@@ -13,8 +13,9 @@ import { Book } from "../interfaces/ResponseAPI";
 import { Button, CircularProgress, Tooltip, Typography } from "@mui/material";
 
 const Books = () => {
-  const { load, books, deleteBook } = useBook();
+  const { load, books, deleteBook, getBooks } = useBook();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentBook, setCurrentBook] = useState({} as Book);
   const [isToEdit, setIsToEdit] = useState(false);
   const [isToDelete, setIsToDelete] = useState(false);
@@ -22,9 +23,16 @@ const Books = () => {
   const handleModalOpen = () => {
     setIsOpen(true);
   };
-  const handleModalClose = () => {
+  const handleModalClose = (success: boolean) => {
+    if (success) {
+      getBooks();
+    }
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    setLoading(load);
+  }, [load]);
 
   // Dealing with assembling the table columns
   const columns: Column[] = useMemo(
@@ -126,8 +134,6 @@ const Books = () => {
     setIsToEdit(false);
     setIsOpen(true);
   };
-
-  console.log(currentBook);
   return (
     <div className={styles.container}>
       {isOpen ? (
@@ -135,15 +141,25 @@ const Books = () => {
           title={
             isToEdit ? "Edit Book" : isToDelete ? "Attention" : "Add new Book"
           }
-          onClose={handleModalClose}
+          onClose={() => handleModalClose(false)}
           isOpen={isOpen}
+          colorTitle={
+            isToEdit ? "var(--white)" : isToDelete ? "red" : "var(--white)"
+          }
         >
           {isToEdit ? (
-            <FormBook onFinish={handleModalClose} book={currentBook} />
+            <FormBook
+              onFinish={(e: boolean) => handleModalClose(e)}
+              book={currentBook}
+            />
           ) : isToDelete ? (
             <DeleteConfirm
-              action={() => deleteBook(currentBook as Book, handleModalClose)}
-              onClose={() => handleModalClose()}
+              action={() =>
+                deleteBook(currentBook as Book, (e: boolean) =>
+                  handleModalClose(e)
+                )
+              }
+              onClose={(e: boolean) => handleModalClose(e)}
               personalityResponse={`This book: ${currentBook.nome}?`}
             />
           ) : isToDelete === false && isToEdit === false ? (
@@ -164,7 +180,7 @@ const Books = () => {
             Book Listing
           </Typography>
         </div>
-        {load !== true ? (
+        {loading !== true ? (
           <Table columns={columns} data={data} actionAdd={handleAddBook} />
         ) : (
           <CircularProgress />

@@ -11,9 +11,10 @@ interface UserProviderProps {
 interface UserContextProps {
   load: boolean;
   users: User[];
-  addUser: (user: User, onFinish: () => void) => void;
-  editUser: (user: User, onFinish: () => void) => void;
-  deleteUser: (user: User, onFinish: () => void) => void;
+  getUsers: () => void;
+  addUser: (user: User, onFinish: (success: boolean) => void) => void;
+  editUser: (user: User, onFinish: (success: boolean) => void) => void;
+  deleteUser: (user: User, onFinish: (success: boolean) => void) => void;
 }
 
 export const UserContext = createContext<UserContextProps>(
@@ -25,6 +26,10 @@ export function UserProvider({ children }: UserProviderProps) {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
+    getUsers();
+  }, []);
+
+  function getUsers() {
     api
       .get("/api/usuarios")
       .then((res) => {
@@ -32,32 +37,50 @@ export function UserProvider({ children }: UserProviderProps) {
         setUsers(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }
 
-  function addUser(user: User, onFinish: () => void) {
+  function addUser(user: User, onFinish: (success: boolean) => void) {
     api
       .post("/api/usuario", { data: user } as AxiosRequestConfig)
-      .then(() => console.log("Deleted User Record"))
-      .catch((err) => console.log(err));
+      .then(() => {
+        onFinish(true);
+        console.log("Deleted User Record");
+      })
+      .catch((err) => {
+        onFinish(false);
+        console.log(err);
+      });
   }
 
-  function editUser(user: User, onFinish: () => void) {
+  function editUser(user: User, onFinish: (success: boolean) => void) {
     api
       .put("/api/usuario", { data: user } as AxiosRequestConfig)
-      .then(() => console.log("Deleted User Record"))
-      .catch((err) => console.log(err));
+      .then(() => {
+        onFinish(true);
+        console.log("Updated User Record");
+      })
+      .catch((err) => {
+        onFinish(false);
+        console.log(err);
+      });
   }
 
-  function deleteUser(user: User, onFinish: () => void) {
+  function deleteUser(user: User, onFinish: (success: boolean) => void) {
     api
       .delete("/api/usuario", { data: user } as AxiosRequestConfig)
-      .then(() => console.log("Deleted User Record"))
-      .catch((err) => console.log(err));
+      .then(() => {
+        onFinish(true);
+        console.log("Deleted User Record");
+      })
+      .catch((err) => {
+        onFinish(false);
+        console.log(err);
+      });
   }
 
   return (
     <UserContext.Provider
-      value={{ load, users, deleteUser, addUser, editUser }}
+      value={{ load, users, deleteUser, addUser, editUser, getUsers }}
     >
       {children}
     </UserContext.Provider>

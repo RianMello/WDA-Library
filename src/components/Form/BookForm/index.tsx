@@ -22,7 +22,7 @@ import styles from "../styles.module.scss";
 import { Button } from "@mui/material";
 
 interface PropsFormBook {
-  onFinish: () => void;
+  onFinish: (e: boolean) => void;
   book?: Book;
 }
 interface initialProps {
@@ -102,8 +102,7 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
 
     console.log(bookFinish);
     if (book?.id !== undefined) {
-      editBook(bookFinish as Book);
-      onFinish();
+      editBook(bookFinish as Book, onFinish);
     } else {
       addBook(bookFinish as Book, onFinish);
       console.log(values.lancamento);
@@ -252,7 +251,7 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
                 width: "9rem",
                 height: "3rem",
               }}
-              onClick={onFinish}
+              onClick={() => onFinish(false)}
               startIcon={<TiCancel />}
             >
               Cancel

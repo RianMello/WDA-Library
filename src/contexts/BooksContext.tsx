@@ -12,9 +12,10 @@ interface BookProviderProps {
 interface BookContextProps {
   load: boolean;
   books: Book[];
-  addBook: (book: Book, onFinish: () => void) => void;
-  editBook: (book: Book) => void;
-  deleteBook: (book: Book, onFinish: () => void) => void;
+  getBooks: () => void;
+  addBook: (book: Book, onFinish: (success: boolean) => void) => void;
+  editBook: (book: Book, onFinish: (success: boolean) => void) => void;
+  deleteBook: (book: Book, onFinish: (sucess: boolean) => void) => void;
 }
 
 export const BooksContext = createContext<BookContextProps>(
@@ -28,40 +29,61 @@ export function BooksProvider({ children }: BookProviderProps) {
   const { t } = useTranslation("common");
 
   useEffect(() => {
+    getBooks();
+  }, []);
+
+  function getBooks() {
     api
       .get("/api/livros")
       .then((res) => {
         setLoad(false);
         setBooks(res.data);
+        console.log(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
-
-  function addBook(book: Book, onFinish: () => void) {
+  }
+  function addBook(book: Book, onFinish: (success: boolean) => void) {
     api
       .post("/api/livro", book)
       .then(() => {
-        onFinish();
+        onFinish(true);
       })
       .catch((err) => {
         if (err.message === "Request failed with status code 400") {
           alert("Book already registered! Check the data and try again");
         }
+        onFinish(false);
       });
   }
 
-  function editBook(book: Book) {
-    api.put("/api/livro", book).then(() => console.log("Book updated"));
+  function editBook(book: Book, onFinish: (success: boolean) => void) {
+    api
+      .put("/api/livro", book)
+      .then(() => {
+        onFinish(true);
+        console.log("Book updated");
+      })
+      .catch((err) => {
+        console.log(err);
+        onFinish(false);
+      });
   }
 
-  function deleteBook(book: Book, onFinish: () => void) {
+  function deleteBook(book: Book, onFinish: (success: boolean) => void) {
     api
       .delete("/api/livro", { data: book } as AxiosRequestConfig)
-      .then(() => console.log("Book deleted"));
+      .then(() => {
+        onFinish(true);
+        console.log("Book deleted");
+      })
+      .catch((err) => {
+        onFinish(false);
+        console.log(err);
+      });
   }
   return (
     <BooksContext.Provider
-      value={{ books, load, addBook, editBook, deleteBook }}
+      value={{ books, load, addBook, editBook, deleteBook, getBooks }}
     >
       {children}
     </BooksContext.Provider>

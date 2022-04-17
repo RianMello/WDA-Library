@@ -47,7 +47,7 @@ export default function Header() {
           </Link>
         </li>
       </ul>
-      <h1>WDA Digital Library</h1>
+      <h1 className={styles.logo}>WDA Digital Library</h1>
     </div>
   );
 }

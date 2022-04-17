@@ -1,5 +1,5 @@
 import { Button, Input, TextField } from "@mui/material";
-import { FormikHelpers, useFormik } from "formik";
+import { FormikHelpers, useFormik, Field } from "formik";
 import { IoMdSave } from "react-icons/io";
 import { TiCancel } from "react-icons/ti";
 import * as Yup from "yup";
@@ -10,7 +10,7 @@ import styles from "../styles.module.scss";
 
 interface FormUserProps {
   user: User;
-  onFinish: () => void;
+  onFinish: (success: boolean) => void;
 }
 
 interface initialProps {
@@ -46,6 +46,7 @@ export function FormUser({ user, onFinish }: FormUserProps) {
     } else {
       addUser(values as User, onFinish);
     }
+    formik.setSubmitting(false);
   };
 
   const formik = useFormik({
@@ -55,49 +56,56 @@ export function FormUser({ user, onFinish }: FormUserProps) {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.formContainerStyle}>
+    <form
+      onSubmit={formik.handleSubmit}
+      className={styles.formContainerStyle}
+      id="UserForm"
+    >
       <div className={styles["input-group"]}>
         <TextField
+          onChange={formik.handleChange}
           error={formik.touched.nome && Boolean(formik.errors.nome)}
           className={styles.inputStyle}
           id="standard-error-helper-text"
           defaultValue={formik.values.nome}
-          name="nome"
           label="Name :"
-          helperText="Incorrect entry."
+          helperText="Required Field."
           variant="standard"
         />
       </div>
       <div className={styles["input-group"]}>
         <TextField
           className={styles.inputStyle}
+          onChange={formik.handleChange}
           error={formik.touched.email && Boolean(formik.errors.email)}
           id="standard-error-helper-text"
-          value={formik.values.email}
+          defaultValue={formik.values.email}
           label="Email :"
-          helperText="Incorrect entry."
+          helperText="Required Field."
           variant="standard"
         />
       </div>
       <div className={styles["input-group"]}>
         <TextField
           className={styles.inputStyle}
+          onChange={formik.handleChange}
           error={formik.touched.endereco && Boolean(formik.errors.endereco)}
           id="standard-error-helper-text"
           label="Address :"
-          value={formik.values.endereco}
-          helperText="Incorrect entry."
+          defaultValue={formik.values.endereco}
+          helperText="Required Field."
           variant="standard"
         />
       </div>
       <div className={styles["input-group"]}>
         <TextField
           className={styles.inputStyle}
+          onChange={formik.handleChange}
           error={formik.touched.nome && Boolean(formik.errors.nome)}
           id="standard-error-helper-text"
           label="City :"
-          value={formik.values.cidade}
-          helperText="Incorrect entry."
+          defaultValue={formik.values.cidade}
+          helperText="Required Field."
           variant="standard"
         />
       </div>
@@ -110,10 +118,11 @@ export function FormUser({ user, onFinish }: FormUserProps) {
             border: "1px solid var(--red)",
             backgroundColor: "var(--red)",
             color: "white",
+            marginRight: "1rem",
             width: "9rem",
             height: "3rem",
           }}
-          onClick={onFinish}
+          onClick={() => onFinish(false)}
           startIcon={<TiCancel />}
         >
           Cancel

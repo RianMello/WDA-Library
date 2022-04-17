@@ -6,14 +6,14 @@ import ModalComponent from "../components/Modal";
 import { useUser } from "../hooks/useUser";
 
 import styles from "./pages.module.scss";
-import { Button, Tooltip, Typography } from "@mui/material";
+import { Button, CircularProgress, Tooltip, Typography } from "@mui/material";
 import { MdEditNote, MdDeleteSweep } from "react-icons/md";
 import { User } from "../interfaces/ResponseAPI";
 import { FormUser } from "../components/Form/UserForm";
 import { DeleteConfirm } from "../components/DeleteConfirm";
 
 export default function Users() {
-  const { load, users, deleteUser } = useUser();
+  const { load, users, deleteUser, getUsers } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({} as User);
   const [isToEdit, setIsToEdit] = useState(false);
@@ -22,7 +22,11 @@ export default function Users() {
   const handleModalOpen = () => {
     setIsOpen(true);
   };
-  const handleModalClose = () => {
+  const handleModalClose = (success: boolean) => {
+    if (success) {
+      getUsers();
+    }
+
     setIsOpen(false);
   };
 
@@ -122,19 +126,28 @@ export default function Users() {
           title={
             isToEdit ? "Edit User" : isToDelete ? "Attention" : "Add New User"
           }
-          onClose={handleModalClose}
+          onClose={() => handleModalClose(false)}
           isOpen={isOpen}
+          colorTitle={
+            isToEdit ? "var(--white)" : isToDelete ? "red" : "var(--white)"
+          }
         >
           {isToEdit ? (
-            <FormUser onFinish={handleModalClose} user={currentUser} />
+            <FormUser
+              onFinish={(success: boolean) => handleModalClose(success)}
+              user={currentUser}
+            />
           ) : isToDelete ? (
             <DeleteConfirm
               action={() => deleteUser(currentUser as User, handleModalClose)}
-              onClose={() => handleModalClose()}
+              onClose={(success: boolean) => handleModalClose(success)}
               personalityResponse={`The User Record:: ${currentUser}`}
             />
           ) : isToDelete === false && isToEdit === false ? (
-            <FormUser onFinish={handleModalClose} user={{} as User} />
+            <FormUser
+              onFinish={(success: boolean) => handleModalClose(success)}
+              user={{} as User}
+            />
           ) : (
             ""
           )}
@@ -154,7 +167,10 @@ export default function Users() {
           </Typography>
         </div>
         {load ? (
-          <h1>Loading</h1>
+          <h1>
+            Loading
+            <CircularProgress />
+          </h1>
         ) : (
           <Table columns={COLUMNS} data={data} actionAdd={handleADdUser} />
         )}
