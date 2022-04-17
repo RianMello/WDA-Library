@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from "axios";
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { User } from "../interfaces/ResponseAPI";
 
@@ -10,6 +11,9 @@ interface UserProviderProps {
 interface UserContextProps {
   load: boolean;
   users: User[];
+  addUser: (user: User, onFinish: () => void) => void;
+  editUser: (user: User, onFinish: () => void) => void;
+  deleteUser: (user: User, onFinish: () => void) => void;
 }
 
 export const UserContext = createContext<UserContextProps>(
@@ -30,8 +34,31 @@ export function UserProvider({ children }: UserProviderProps) {
       .catch((err) => console.log(err));
   }, []);
 
+  function addUser(user: User, onFinish: () => void) {
+    api
+      .post("/api/usuario", { data: user } as AxiosRequestConfig)
+      .then(() => console.log("Deleted User Record"))
+      .catch((err) => console.log(err));
+  }
+
+  function editUser(user: User, onFinish: () => void) {
+    api
+      .put("/api/usuario", { data: user } as AxiosRequestConfig)
+      .then(() => console.log("Deleted User Record"))
+      .catch((err) => console.log(err));
+  }
+
+  function deleteUser(user: User, onFinish: () => void) {
+    api
+      .delete("/api/usuario", { data: user } as AxiosRequestConfig)
+      .then(() => console.log("Deleted User Record"))
+      .catch((err) => console.log(err));
+  }
+
   return (
-    <UserContext.Provider value={{ load, users }}>
+    <UserContext.Provider
+      value={{ load, users, deleteUser, addUser, editUser }}
+    >
       {children}
     </UserContext.Provider>
   );

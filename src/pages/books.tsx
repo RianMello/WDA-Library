@@ -1,23 +1,16 @@
 import Head from "next/head";
 import { useMemo, useState } from "react";
 import { DeleteConfirm } from "../components/DeleteConfirm";
-import {
-  Column,
-  TableOptions,
-  useGlobalFilter,
-  useTable,
-  UseTableOptions,
-} from "react-table";
+import { Column } from "react-table";
 import Table from "../components/Tables";
 import { useBook } from "../hooks/useBook";
 import ModalComponent from "../components/Modal";
 
 import styles from "./pages.module.scss";
 import { MdEditNote, MdDeleteSweep } from "react-icons/md";
-import { TableFilter } from "../components/Tables/Filter";
 import { FormBook } from "../components/Form/BookForm";
 import { Book } from "../interfaces/ResponseAPI";
-import { Button, Tooltip, Typography } from "@mui/material";
+import { Button, CircularProgress, Tooltip, Typography } from "@mui/material";
 
 const Books = () => {
   const { load, books, deleteBook } = useBook();
@@ -25,8 +18,6 @@ const Books = () => {
   const [currentBook, setCurrentBook] = useState({} as Book);
   const [isToEdit, setIsToEdit] = useState(false);
   const [isToDelete, setIsToDelete] = useState(false);
-  const [bookToEdited, setBookToEdited] = useState({} as Book);
-  const [bookToDelete, setBookToDelete] = useState({} as Book);
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -38,12 +29,6 @@ const Books = () => {
   // Dealing with assembling the table columns
   const columns: Column[] = useMemo(
     () => [
-      {
-        Header: "Actions",
-        accessor: "actions",
-        className: "thContentAct",
-        classCell: "tdContentAct",
-      },
       {
         Header: "ID",
         accessor: "id",
@@ -85,6 +70,12 @@ const Books = () => {
         accessor: "totalalugado",
         className: "thContent",
         classCell: "tdContent",
+      },
+      {
+        Header: "Actions",
+        accessor: "actions",
+        className: "thContentAct",
+        classCell: "tdContentAct",
       },
     ],
     []
@@ -142,13 +133,8 @@ const Books = () => {
       {isOpen ? (
         <ModalComponent
           title={
-            isToEdit
-              ? "Edit Book"
-              : isToDelete
-              ? "Delete this Book?"
-              : "Add new Book"
+            isToEdit ? "Edit Book" : isToDelete ? "Attention" : "Add new Book"
           }
-          FormId="BookAdd"
           onClose={handleModalClose}
           isOpen={isOpen}
         >
@@ -158,6 +144,7 @@ const Books = () => {
             <DeleteConfirm
               action={() => deleteBook(currentBook as Book, handleModalClose)}
               onClose={() => handleModalClose()}
+              personalityResponse={`This book: ${currentBook.nome}?`}
             />
           ) : isToDelete === false && isToEdit === false ? (
             <FormBook onFinish={handleModalClose} book={{} as Book} />
@@ -180,7 +167,7 @@ const Books = () => {
         {load !== true ? (
           <Table columns={columns} data={data} actionAdd={handleAddBook} />
         ) : (
-          <h1>loading</h1>
+          <CircularProgress />
         )}
       </div>
     </div>

@@ -242,19 +242,36 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
           </div>
           <div className={styles["control-modalForm"]}>
             <Button
-              variant="outlined"
-              className={styles["btn-cancel"]}
+              variant="contained"
+              color="error"
+              sx={{
+                fontWeight: "bold",
+                border: "1px solid var(--red)",
+                backgroundColor: "var(--red)",
+                color: "white",
+                width: "9rem",
+                height: "3rem",
+              }}
               onClick={onFinish}
+              startIcon={<TiCancel />}
             >
-              <TiCancel />
               Cancel
             </Button>
             <Button
-              variant="outlined"
-              className={styles["btn-save"]}
+              variant="contained"
+              color="success"
+              sx={{
+                fontWeight: "bold",
+                border: "1px solid #309E3A",
+                backgroundColor: "#309E3A",
+                color: "white",
+                marginLeft: "1rem",
+                width: "9rem",
+                height: "3rem",
+              }}
               type="submit"
+              startIcon={<IoMdSave />}
             >
-              <IoMdSave />
               Save
             </Button>
           </div>

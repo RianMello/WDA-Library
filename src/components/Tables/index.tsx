@@ -18,6 +18,7 @@ import ModalComponent from "../Modal";
 import { FormBook } from "../Form/BookForm";
 import { Book, Publisher, Rental, User } from "../../interfaces/ResponseAPI";
 import { Button, Typography } from "@mui/material";
+import { ButtonAdd } from "../Buttons/ButtonAdd";
 
 const CustomTablePagination = styled(TablePaginationUnstyled)(
   ({ theme }) => `
@@ -123,18 +124,8 @@ const Table = ({ columns, data, actionAdd }: any) => {
         <tr className={styles.trHeaderContainer}>
           <td colSpan={columns.length}>
             <div className={styles.tdInput}>
-              <Button
-                variant="contained"
-                sx={{ fontWeight: "bold", border: "2px solid" }}
-                onClick={() => {
-                  actionAdd();
-                }}
-                className={styles.buttonAdd}
-              >
-                Add
-              </Button>
-
               <TableFilter filter={globalFilter} setFilter={setGlobalFilter} />
+              <ButtonAdd handleAddItem={actionAdd} />
             </div>
           </td>
         </tr>
@@ -162,19 +153,18 @@ const Table = ({ columns, data, actionAdd }: any) => {
                     component="h6"
                   >
                     {column.render("Header")}
-                  </Typography>
-
-                  <span>
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <HiSortDescending />
+                    <span>
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <HiSortDescending />
+                        ) : (
+                          <HiSortAscending />
+                        )
                       ) : (
-                        <HiSortAscending />
-                      )
-                    ) : (
-                      ""
-                    )}
-                  </span>
+                        ""
+                      )}
+                    </span>
+                  </Typography>
                 </th>
               );
             })}
@@ -194,7 +184,6 @@ const Table = ({ columns, data, actionAdd }: any) => {
               key={row.id}
             >
               {row.cells.map((cell) => {
-                console.log(cell.column.render("classCell"));
                 return (
                   <td
                     className={

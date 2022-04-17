@@ -160,3 +160,43 @@
       }
 }
 
+.formContainerStyle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-width: 90%;
+    .input-group{
+        display: flex;
+        flex-direction:column;
+        width: 100%;
+        justify-content: space-between;
+        margin: 0.25rem;
+
+    }
+    .control-modalForm{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .MuiTextField-root{
+        &:hover{
+            border: none;
+        }
+    }
+}
+
+.inputStyle{
+    color: white;
+
+    input{
+        box-shadow: inset 0 -1.5px 0 white;
+        color: white;
+    }
+    label{
+        color: white;
+    }
+}

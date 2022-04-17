@@ -2,19 +2,27 @@ import { Button } from "@mui/material";
 
 // import styles from ''
 
-export const ButtonAdd = ({ handleModalOpen, setItemToEdited, setIsEdit }) => {
+interface ButtonProps {
+  handleAddItem: () => void;
+}
+
+export const ButtonAdd = ({ handleAddItem }: ButtonProps) => {
+  //Botão que recebe a ação de inicar o modal de "adicionar" da pagina.
   return (
     <Button
       variant="contained"
-      sx={{ fontWeight: "bold", border: "2px solid" }}
+      color="primary"
+      sx={{
+        fontWeight: "bold",
+        height: "3rem",
+        width: "6rem",
+      }}
       onClick={() => {
-        handleModalOpen();
-        setItemToEdited();
-        setIsEdit(false);
+        handleAddItem();
       }}
       //   className={styles.buttonAdd}
     >
-      Add
+      NEW
     </Button>
   );
 };

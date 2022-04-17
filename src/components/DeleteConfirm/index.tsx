@@ -4,8 +4,13 @@ import { Box, Button, Typography } from "@mui/material";
 interface DeleteProps {
   onClose: () => void;
   action: () => void;
+  personalityResponse: string;
 }
-export const DeleteConfirm = ({ action, onClose }: DeleteProps) => {
+export const DeleteConfirm = ({
+  action,
+  onClose,
+  personalityResponse,
+}: DeleteProps) => {
   return (
     <Box
       sx={{
@@ -15,11 +20,15 @@ export const DeleteConfirm = ({ action, onClose }: DeleteProps) => {
         justifyContent: "center",
       }}
     >
-      <Typography variant="h3" component="h2">
+      <Typography
+        variant="h3"
+        component="h3"
+        sx={{ fontWeight: "bold", color: "red" }}
+      >
         Attention!
       </Typography>
       <Typography variant="body1" component="p">
-        Are you sure you want to permanently delete this record?
+        Are you sure you want to permanently delete {personalityResponse}?
       </Typography>
       <Box
         sx={{

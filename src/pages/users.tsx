@@ -1,44 +1,68 @@
 import Head from "next/head";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Table from "../components/Tables";
+import ModalComponent from "../components/Modal";
+
 import { useUser } from "../hooks/useUser";
 
 import styles from "./pages.module.scss";
+import { Button, Tooltip, Typography } from "@mui/material";
+import { MdEditNote, MdDeleteSweep } from "react-icons/md";
+import { User } from "../interfaces/ResponseAPI";
+import { FormUser } from "../components/Form/UserForm";
+import { DeleteConfirm } from "../components/DeleteConfirm";
 
 export default function Users() {
-  const { load, users } = useUser();
+  const { load, users, deleteUser } = useUser();
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState({} as User);
+  const [isToEdit, setIsToEdit] = useState(false);
+  const [isToDelete, setIsToDelete] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
 
   const COLUMNS = useMemo(
     () => [
       {
-        Header: "Actions",
-        accessor: "actions",
-        className: "thContentAct",
-      },
-      {
         Header: "ID",
         accessor: "id",
         className: "thContentID",
+        classCell: "tdContentID",
       },
       {
         Header: "Name",
         accessor: "nome",
         className: "thContent",
+        classCell: "tdContent",
       },
       {
         Header: "Address",
         accessor: "endereco",
         className: "thContent",
+        classCell: "tdContent",
       },
       {
         Header: "Email",
         accessor: "email",
         className: "thContent",
+        classCell: "tdContent",
       },
       {
         Header: "City",
         accessor: "cidade",
         className: "thContent",
+        classCell: "tdContent",
+      },
+      {
+        Header: "Actions",
+        accessor: "actions",
+        className: "thContentAct",
+        classCell: "tdContentAct",
       },
     ],
     []
@@ -47,20 +71,93 @@ export default function Users() {
   const data = useMemo(() => {
     return users.map((user) => ({
       ...user,
-      actions: "Edit/Delete",
+      actions: (
+        <div className={styles.actions}>
+          <Tooltip title="Edit User">
+            <Button
+              className={styles.buttonEdit}
+              onClick={() => {
+                handleModalOpen();
+                setIsToEdit(true);
+                setIsToDelete(false);
+                setCurrentUser(user);
+              }}
+            >
+              <MdEditNote style={{ width: "2rem", height: "2rem" }} />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Delete User">
+            <Button
+              className={styles.buttonDel}
+              onClick={() => {
+                handleModalOpen();
+                setIsToDelete(true);
+                setIsToEdit(false);
+                setCurrentUser(user);
+              }}
+            >
+              <MdDeleteSweep
+                style={{ color: "var(--red)", width: "2rem", height: "2rem" }}
+              />
+            </Button>
+          </Tooltip>
+        </div>
+      ),
     }));
   }, [users]);
+
+  const handleADdUser = () => {
+    setIsToDelete(false);
+    setIsToEdit(false);
+    setIsOpen(true);
+  };
 
   return (
     <div className={styles.container}>
       <Head>
         <title>Library-Users</title>
       </Head>
+      {isOpen ? (
+        <ModalComponent
+          title={
+            isToEdit ? "Edit User" : isToDelete ? "Attention" : "Add New User"
+          }
+          onClose={handleModalClose}
+          isOpen={isOpen}
+        >
+          {isToEdit ? (
+            <FormUser onFinish={handleModalClose} user={currentUser} />
+          ) : isToDelete ? (
+            <DeleteConfirm
+              action={() => deleteUser(currentUser as User, handleModalClose)}
+              onClose={() => handleModalClose()}
+              personalityResponse={`The User Record:: ${currentUser}`}
+            />
+          ) : isToDelete === false && isToEdit === false ? (
+            <FormUser onFinish={handleModalClose} user={{} as User} />
+          ) : (
+            ""
+          )}
+        </ModalComponent>
+      ) : (
+        ""
+      )}
       <div className={styles.content}>
         <div className={styles.titleContent}>
-          <h1>User Listing</h1>
+          <Typography
+            variant="h3"
+            component="h3"
+            style={{ fontWeight: "bold" }}
+          >
+            {" "}
+            User Listing
+          </Typography>
         </div>
-        {load ? <h1>Loading</h1> : <Table columns={COLUMNS} data={data} />}
+        {load ? (
+          <h1>Loading</h1>
+        ) : (
+          <Table columns={COLUMNS} data={data} actionAdd={handleADdUser} />
+        )}
       </div>
     </div>
   );
