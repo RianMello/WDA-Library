@@ -17,13 +17,14 @@ import { MdEditNote, MdDeleteSweep } from "react-icons/md";
 import { TableFilter } from "../components/Tables/Filter";
 import { FormBook } from "../components/Form/BookForm";
 import { Book } from "../interfaces/ResponseAPI";
-import { Button, Tooltip } from "@mui/material";
+import { Button, Tooltip, Typography } from "@mui/material";
 
 const Books = () => {
   const { load, books, deleteBook } = useBook();
   const [isOpen, setIsOpen] = useState(false);
   const [currentBook, setCurrentBook] = useState({} as Book);
-  const [isToEdit, setIsToEdit] = useState(true);
+  const [isToEdit, setIsToEdit] = useState(false);
+  const [isToDelete, setIsToDelete] = useState(false);
   const [bookToEdited, setBookToEdited] = useState({} as Book);
   const [bookToDelete, setBookToDelete] = useState({} as Book);
 
@@ -101,6 +102,7 @@ const Books = () => {
               onClick={() => {
                 handleModalOpen();
                 setIsToEdit(true);
+                setIsToDelete(false);
                 setCurrentBook(book);
               }}
             >
@@ -113,6 +115,7 @@ const Books = () => {
               // disabled={book.totalalugado !== 0 ? true : false}
               onClick={() => {
                 handleModalOpen();
+                setIsToDelete(true);
                 setIsToEdit(false);
                 setCurrentBook(book);
               }}
@@ -127,17 +130,23 @@ const Books = () => {
     }));
   }, [books]);
 
-  console.log(books);
+  const handleAddBook = () => {
+    setIsToDelete(false);
+    setIsToEdit(false);
+    setIsOpen(true);
+  };
+
+  console.log(currentBook);
   return (
     <div className={styles.container}>
       {isOpen ? (
         <ModalComponent
           title={
-            currentBook
-              ? isToEdit
-                ? "Edit book"
-                : " Delete this book?"
-              : "Add new book"
+            isToEdit
+              ? "Edit Book"
+              : isToDelete
+              ? "Delete this Book?"
+              : "Add new Book"
           }
           FormId="BookAdd"
           onClose={handleModalClose}
@@ -145,11 +154,15 @@ const Books = () => {
         >
           {isToEdit ? (
             <FormBook onFinish={handleModalClose} book={currentBook} />
-          ) : (
+          ) : isToDelete ? (
             <DeleteConfirm
-              action={() => deleteBook(currentBook, handleModalClose)}
+              action={() => deleteBook(currentBook as Book, handleModalClose)}
               onClose={() => handleModalClose()}
             />
+          ) : isToDelete === false && isToEdit === false ? (
+            <FormBook onFinish={handleModalClose} book={{} as Book} />
+          ) : (
+            ""
           )}
         </ModalComponent>
       ) : (
@@ -160,10 +173,12 @@ const Books = () => {
       </Head>
       <div className={styles.content}>
         <div className={styles.titleContent}>
-          <h1>Book Listing</h1>
+          <Typography sx={{ fontWeight: "bold" }} variant="h3" component="h3">
+            Book Listing
+          </Typography>
         </div>
         {load !== true ? (
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={data} actionAdd={handleAddBook} />
         ) : (
           <h1>loading</h1>
         )}

@@ -14,6 +14,7 @@ export const TableFilter = ({ filter, setFilter }: any) => {
             style={{ color: "white", width: "1.5rem", height: "1.5rem" }}
           />
         }
+        style={{ border: "1px solid var(--blue-icon)" }}
         variant="outlined"
         value={filter || ""}
         onChange={(e) => setFilter(e.currentTarget.value)}

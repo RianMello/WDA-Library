@@ -16,8 +16,8 @@ import { TableFilter } from "./Filter";
 import Modal from "../Modal";
 import ModalComponent from "../Modal";
 import { FormBook } from "../Form/BookForm";
-import { Book } from "../../interfaces/ResponseAPI";
-import { Typography } from "@mui/material";
+import { Book, Publisher, Rental, User } from "../../interfaces/ResponseAPI";
+import { Button, Typography } from "@mui/material";
 
 const CustomTablePagination = styled(TablePaginationUnstyled)(
   ({ theme }) => `
@@ -83,13 +83,11 @@ const CustomTablePagination = styled(TablePaginationUnstyled)(
     `
 );
 
-const Table = ({ columns, data }: any) => {
+type ItemToUpdateType = Book | Publisher | Rental | User;
+
+const Table = ({ columns, data, actionAdd }: any) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [bookToEdited, setBookToEdited] = useState({} as Book);
-  const [isEdit, setIsEdit] = useState(false);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
@@ -117,43 +115,24 @@ const Table = ({ columns, data }: any) => {
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
-  const handleModalOpen = () => {
-    setIsOpen(true);
-  };
-  const handleModalClose = () => {
-    setIsOpen(false);
-  };
-
   const { globalFilter } = state;
 
   return (
     <table className={styles.tableContainer} {...getTableProps()}>
-      {isOpen ? (
-        <ModalComponent
-          title="Add Book"
-          FormId="BookAdd"
-          onClose={handleModalClose}
-          isOpen={isOpen}
-        >
-          <FormBook onFinish={handleModalClose} book={bookToEdited} />
-        </ModalComponent>
-      ) : (
-        ""
-      )}
       <thead className={styles.theadContainer}>
         <tr className={styles.trHeaderContainer}>
           <td colSpan={columns.length}>
             <div className={styles.tdInput}>
-              <button
+              <Button
+                variant="contained"
+                sx={{ fontWeight: "bold", border: "2px solid" }}
                 onClick={() => {
-                  handleModalOpen();
-                  setBookToEdited({} as Book);
-                  setIsEdit(false);
+                  actionAdd();
                 }}
                 className={styles.buttonAdd}
               >
                 Add
-              </button>
+              </Button>
 
               <TableFilter filter={globalFilter} setFilter={setGlobalFilter} />
             </div>
@@ -177,7 +156,14 @@ const Table = ({ columns, data }: any) => {
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   key={column.id}
                 >
-                  {column.render("Header")}
+                  <Typography
+                    sx={{ fontWeight: "bold", fontSize: "1.3rem" }}
+                    variant="h6"
+                    component="h6"
+                  >
+                    {column.render("Header")}
+                  </Typography>
+
                   <span>
                     {column.isSorted ? (
                       column.isSortedDesc ? (

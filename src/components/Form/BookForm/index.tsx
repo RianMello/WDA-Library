@@ -110,14 +110,14 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
     }
   };
 
-  const formik = useFormik({
-    initialValues: initialValue,
-    validationSchema: schema,
-    onSubmit: (values, { setSubmitting }: FormikHelpers<initialProps>) => {
-      handleSubmit(values);
-      setSubmitting(false);
-    },
-  });
+  // const formik = useFormik({
+  //   initialValues: initialValue,
+  //   validationSchema: schema,
+  //   onSubmit: (values, { setSubmitting }: FormikHelpers<initialProps>) => {
+  //     handleSubmit(values);
+  //     setSubmitting(false);
+  //   },
+  // });
   return (
     <div className={styles.formContainer}>
       {/* <form onSubmit={formik.handleSubmit}>
@@ -186,7 +186,6 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
         <Form>
           <div className={styles["input-group"]}>
             <label htmlFor="nome">Name *:</label>
-
             <Field id="nome" name="nome" type="text" />
             <ErrorMessage
               component="span"
@@ -210,11 +209,11 @@ export function FormBook({ onFinish, book }: PropsFormBook) {
               publishers={publishers}
               pubChange={handlePublisherChange}
             />
-            {/* <ErrorMessage
+            <ErrorMessage
               component="span"
               className={styles.errorMessage}
               name="editora_id"
-            /> */}
+            />
           </div>
           <div className={styles["input-group-two"]}>
             <div>
