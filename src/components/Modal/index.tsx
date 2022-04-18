@@ -1,6 +1,6 @@
 import { Box, Modal, Typography } from "@mui/material";
 import { ReactNode } from "react";
-import { MdOutlineCancel } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
@@ -22,7 +22,7 @@ const ModalComponent = ({
     <Modal open={isOpen} onClose={onClose}>
       <Box className={styles.modal}>
         <div onClick={() => onClose()} className={styles.exitModal}>
-          <MdOutlineCancel style={{ width: "2rem", height: "2rem" }} />
+          <MdClose style={{ width: "2rem", height: "2rem" }} />
         </div>
         <div>
           <Typography

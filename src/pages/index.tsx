@@ -8,14 +8,31 @@ import styles from "./pages.module.scss";
 
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Typography } from "@mui/material";
 
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import { MdSpaceDashboard } from "react-icons/md";
+import { FaCashRegister, FaUsers } from "react-icons/fa";
+import { GiNotebook } from "react-icons/gi";
+import { useUser } from "../hooks/useUser";
+import { usePublisher } from "../hooks/usePublisher";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard: NextPage = () => {
   const { rentals } = useRental();
-  const { load, mostRented } = useBook();
+  const { users } = useUser();
+  const { publishers } = usePublisher();
+  const { load, books, mostRented } = useBook();
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(load);
+  }, [load]);
   const topFiveRenteds = mostRented.slice(0, 5);
 
   console.log(mostRented);
@@ -40,24 +57,174 @@ const Dashboard: NextPage = () => {
   };
 
   return (
-    <div className={styles.boardContainer}>
+    <Box className={styles.boardContainer}>
       <Head>
         <title>Library-Dashboard</title>
       </Head>
       <div className={styles.ChartContainer}>
-        <Typography sx={{ fontWeight: "bold" }} variant="h2" component="h2">
-          Chats
-        </Typography>
         <Typography
-          sx={{ padding: "1rem", marginTop: "1rem" }}
+          sx={{ fontWeight: "bold", width: "100%" }}
+          variant="h2"
+          component="h2"
+        >
+          Charts
+        </Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Box
+            sx={{
+              width: "50%",
+              height: "100%",
+            }}
+          >
+            <Typography
+              sx={{ padding: "1rem", marginTop: "1rem" }}
+              variant="h4"
+              component="h4"
+            >
+              Top Five Rented
+            </Typography>
+            {loading ? (
+              <>
+                laoding datas <CircularProgress />
+              </>
+            ) : (
+              <Doughnut data={data} />
+            )}
+          </Box>
+          <Box sx={{ width: "50%", height: "100%" }}>
+            <Typography
+              sx={{ padding: "1rem", marginTop: "1rem" }}
+              variant="h4"
+              component="h4"
+            >
+              Top Five Rented
+            </Typography>
+            {loading ? (
+              <>
+                laoding datas <CircularProgress />
+              </>
+            ) : (
+              <Doughnut data={data} />
+            )}
+          </Box>
+        </Box>
+      </div>
+      <Box
+        sx={{
+          textAlign: "center",
+          backgroundColor: "var(--blue-g0)",
+          width: "30%",
+          height: "15rem",
+          marginLeft: "2rem",
+          borderRadius: "0.5rem",
+        }}
+      >
+        <Typography
+          sx={{ fontWeight: "bold", padding: "1rem" }}
           variant="h4"
           component="h4"
         >
-          Top Five Rented
+          Inventory and Records
         </Typography>
-        <Doughnut data={data} />
-      </div>
-    </div>
+        <List
+          sx={{
+            width: "100%",
+            maxWidth: "100%",
+            bgcolor: "var(--blue-g100)",
+            borderRadius: "0.5rem",
+          }}
+        >
+          <ListItem sx={{ fontSize: "" }}>
+            <ListItemAvatar>
+              <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
+                <MdSpaceDashboard style={{ color: "var(--blue-icons)" }} />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primaryTypographyProps={{
+                fontSize: "1.3rem",
+                fontWeight: "bold",
+              }}
+              secondaryTypographyProps={{ color: "white" }}
+              primary="Books"
+              secondary={`total:${books.length}`}
+            />
+          </ListItem>
+          <Divider
+            sx={{ backgroundColor: "var(--blue-g200)" }}
+            variant="inset"
+            component="li"
+          />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
+                <FaCashRegister style={{ color: "var(--blue-icons)" }} />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primaryTypographyProps={{
+                fontSize: "1.3rem",
+                fontWeight: "bold",
+              }}
+              secondaryTypographyProps={{ color: "white" }}
+              primary="Rental Records"
+              secondary={rentals.length}
+            />
+          </ListItem>
+          <Divider
+            sx={{ backgroundColor: "var(--blue-g200)" }}
+            variant="inset"
+            component="li"
+          />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
+                <GiNotebook style={{ color: "var(--blue-icons)" }} />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primaryTypographyProps={{
+                fontSize: "1.3rem",
+                fontWeight: "bold",
+              }}
+              secondaryTypographyProps={{ color: "white" }}
+              primary="User Records"
+              secondary={books.length}
+            />
+          </ListItem>
+          <Divider
+            sx={{ backgroundColor: "var(--blue-g200)" }}
+            variant="inset"
+            component="li"
+          />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
+                <FaUsers style={{ color: "var(--blue-icons)" }} />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primaryTypographyProps={{
+                fontSize: "1.3rem",
+                fontWeight: "bold",
+              }}
+              secondaryTypographyProps={{ color: "white" }}
+              primary="Publisher Records"
+              secondary={publishers.length}
+            />
+          </ListItem>
+        </List>
+      </Box>
+    </Box>
   );
 };
 
