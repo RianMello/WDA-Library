@@ -17,7 +17,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaCashRegister, FaUsers } from "react-icons/fa";
-import { GiNotebook } from "react-icons/gi";
+import { GiBookshelf, GiNotebook } from "react-icons/gi";
 import { useUser } from "../hooks/useUser";
 import { usePublisher } from "../hooks/usePublisher";
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -34,7 +34,7 @@ const Dashboard: NextPage = () => {
     setLoading(load);
   }, [load]);
   const topFiveRenteds = mostRented.slice(0, 5);
-
+  const leastRentedBooks = mostRented.slice(-7, -2);
   console.log(mostRented);
 
   const data = {
@@ -56,6 +56,25 @@ const Dashboard: NextPage = () => {
     ],
   };
 
+  const dataLast = {
+    labels: leastRentedBooks.map((book) => book.nome),
+    datasets: [
+      {
+        label: "",
+        data: leastRentedBooks.map((book) => book.totalalugado),
+        backgroundColor: [
+          "#eb4034",
+          "#c2352b",
+          "#8f251e",
+          "#591713",
+          "#360e0b",
+        ],
+        borderColor: ["#eb4034"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <Box className={styles.boardContainer}>
       <Head>
@@ -69,7 +88,7 @@ const Dashboard: NextPage = () => {
         >
           Charts
         </Typography>
-
+        <Divider sx={{ backgroundColor: "var(--blue-g200)" }} />
         <Box
           sx={{
             display: "flex",
@@ -85,11 +104,7 @@ const Dashboard: NextPage = () => {
               height: "100%",
             }}
           >
-            <Typography
-              sx={{ padding: "1rem", marginTop: "1rem" }}
-              variant="h4"
-              component="h4"
-            >
+            <Typography sx={{ padding: "1rem" }} variant="h4" component="h4">
               Top Five Rented
             </Typography>
             {loading ? (
@@ -101,19 +116,15 @@ const Dashboard: NextPage = () => {
             )}
           </Box>
           <Box sx={{ width: "50%", height: "100%" }}>
-            <Typography
-              sx={{ padding: "1rem", marginTop: "1rem" }}
-              variant="h4"
-              component="h4"
-            >
-              Top Five Rented
+            <Typography sx={{ padding: "1rem" }} variant="h4" component="h4">
+              Last 5 Rented
             </Typography>
             {loading ? (
               <>
                 laoding datas <CircularProgress />
               </>
             ) : (
-              <Doughnut data={data} />
+              <Doughnut data={dataLast} />
             )}
           </Box>
         </Box>
@@ -146,7 +157,7 @@ const Dashboard: NextPage = () => {
           <ListItem sx={{ fontSize: "" }}>
             <ListItemAvatar>
               <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
-                <MdSpaceDashboard style={{ color: "var(--blue-icons)" }} />
+                <GiBookshelf style={{ color: "var(--blue-icons)" }} />
               </Avatar>
             </ListItemAvatar>
             <ListItemText
@@ -188,7 +199,7 @@ const Dashboard: NextPage = () => {
           <ListItem>
             <ListItemAvatar>
               <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
-                <GiNotebook style={{ color: "var(--blue-icons)" }} />
+                <FaUsers style={{ color: "var(--blue-icons)" }} />
               </Avatar>
             </ListItemAvatar>
             <ListItemText
@@ -209,7 +220,7 @@ const Dashboard: NextPage = () => {
           <ListItem>
             <ListItemAvatar>
               <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
-                <FaUsers style={{ color: "var(--blue-icons)" }} />
+                <GiNotebook style={{ color: "var(--blue-icons)" }} />
               </Avatar>
             </ListItemAvatar>
             <ListItemText

@@ -141,7 +141,7 @@ export default function Users() {
             <DeleteConfirm
               action={() => deleteUser(currentUser as User, handleModalClose)}
               onClose={(success: boolean) => handleModalClose(success)}
-              personalityResponse={`The User Record:: ${currentUser}`}
+              personalityResponse={`The User: ${currentUser.nome}`}
             />
           ) : isToDelete === false && isToEdit === false ? (
             <FormUser

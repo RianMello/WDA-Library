@@ -25,11 +25,7 @@ const ModalComponent = ({
           <MdClose style={{ width: "2rem", height: "2rem" }} />
         </div>
         <div>
-          <Typography
-            variant="h3"
-            component="h3"
-            sx={{ fontWeight: "bold", color: colorTitle }}
-          >
+          <Typography variant="h3" component="h3" sx={{ color: colorTitle }}>
             {title}
           </Typography>
         </div>

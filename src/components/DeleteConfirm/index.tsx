@@ -17,8 +17,9 @@ export const DeleteConfirm = ({
         display: "flex",
         alignItems: "center",
         flexDirection: "column",
-        justifyContent: "center",
-        width: "90%",
+        paddingTop: "5rem",
+        textAlign: "justify",
+        width: "100%",
         height: "100%",
       }}
     >
@@ -29,8 +30,13 @@ export const DeleteConfirm = ({
       >
         Attention!
       </Typography> */}
-      <Typography variant="h5" component="h5" sx={{ maxWidth: "20rem" }}>
-        Are you sure you want to permanently delete {personalityResponse}?
+      <Typography
+        variant="h4"
+        component="h4"
+        sx={{ color: "var(--white-g100)", maxWidth: "35rem" }}
+      >
+        Are you sure you want to permanently delete this record:{" "}
+        <strong style={{ color: "white" }}>{personalityResponse}</strong>?
       </Typography>
       <Box
         sx={{
@@ -38,21 +44,29 @@ export const DeleteConfirm = ({
           alignItems: "center",
           flexDirection: "row",
           justifyContent: "space-between",
-          width: "100%",
+          position: "fixed",
+          bottom: "2rem",
+          right: "15%",
+          width: "70%",
         }}
         className="actions"
       >
         <Button
-          variant="outlined"
+          variant="contained"
           onClick={() => onClose(false)}
+          color="error"
           sx={{ width: "9rem", height: "3rem" }}
         >
           Não
         </Button>
-        <Button variant="outlined" onClick={() => action()}>
+        <Button
+          color="success"
+          sx={{ width: "9rem", height: "3rem" }}
+          variant="contained"
+          onClick={() => action()}
+        >
           Sim
         </Button>
-        {/* <button onClick={() => action()}>Sim</button> */}
       </Box>
     </Box>
   );

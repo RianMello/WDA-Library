@@ -144,7 +144,7 @@ const Books = () => {
           onClose={() => handleModalClose(false)}
           isOpen={isOpen}
           colorTitle={
-            isToEdit ? "var(--white)" : isToDelete ? "red" : "var(--white)"
+            isToEdit ? "var(--white)" : isToDelete ? "#f2da22" : "var(--white)"
           }
         >
           {isToEdit ? (
@@ -160,7 +160,7 @@ const Books = () => {
                 )
               }
               onClose={(e: boolean) => handleModalClose(e)}
-              personalityResponse={`This book: ${currentBook.nome}`}
+              personalityResponse={`Book - ${currentBook.nome}`}
             />
           ) : isToDelete === false && isToEdit === false ? (
             <FormBook onFinish={handleModalClose} book={{} as Book} />
