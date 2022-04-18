@@ -160,7 +160,7 @@ const Books = () => {
                 )
               }
               onClose={(e: boolean) => handleModalClose(e)}
-              personalityResponse={`This book: ${currentBook.nome}?`}
+              personalityResponse={`This book: ${currentBook.nome}`}
             />
           ) : isToDelete === false && isToEdit === false ? (
             <FormBook onFinish={handleModalClose} book={{} as Book} />

@@ -3,6 +3,6 @@ import { PublishersContext } from '../contexts/PublishersContext'
 
 export function usePublisher() {
     const context = useContext(PublishersContext)
-    const { load, publishers } = context
-    return { load, publishers }
+    const { load, publishers, getPublishers, addPublisher, editPublisher, deletePublisher } = context
+    return { load, publishers, getPublishers, addPublisher, editPublisher, deletePublisher }
 }

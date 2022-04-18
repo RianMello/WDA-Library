@@ -30,7 +30,7 @@ export const DeleteConfirm = ({
         Attention!
       </Typography> */}
       <Typography variant="h5" component="h5" sx={{ maxWidth: "20rem" }}>
-        Are you sure you want to permanently delete {personalityResponse}
+        Are you sure you want to permanently delete {personalityResponse}?
       </Typography>
       <Box
         sx={{

@@ -156,9 +156,9 @@ const Table = ({ columns, data, actionAdd }: any) => {
                     <span>
                       {column.isSorted ? (
                         column.isSortedDesc ? (
-                          <HiSortDescending />
+                          <HiSortDescending color="var(--blue)" />
                         ) : (
-                          <HiSortAscending />
+                          <HiSortAscending color="var(--blue)" />
                         )
                       ) : (
                         ""

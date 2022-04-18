@@ -12,6 +12,7 @@ interface BookProviderProps {
 interface BookContextProps {
   load: boolean;
   books: Book[];
+  mostRented: Book[];
   getBooks: () => void;
   addBook: (book: Book, onFinish: (success: boolean) => void) => void;
   editBook: (book: Book, onFinish: (success: boolean) => void) => void;
@@ -24,12 +25,14 @@ export const BooksContext = createContext<BookContextProps>(
 
 export function BooksProvider({ children }: BookProviderProps) {
   const [books, setBooks] = useState<Book[]>([]);
+  const [mostRented, setMostRented] = useState<Book[]>([]);
   const [load, setLoad] = useState(true);
 
   const { t } = useTranslation("common");
 
   useEffect(() => {
     getBooks();
+    getMostRented();
   }, []);
 
   function getBooks() {
@@ -42,6 +45,18 @@ export function BooksProvider({ children }: BookProviderProps) {
       })
       .catch((err) => console.log(err));
   }
+
+  function getMostRented() {
+    api
+      .get("/api/maisalugados")
+      .then((res) => {
+        setLoad(false);
+        setMostRented(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  }
+
   function addBook(book: Book, onFinish: (success: boolean) => void) {
     api
       .post("/api/livro", book)
@@ -83,7 +98,15 @@ export function BooksProvider({ children }: BookProviderProps) {
   }
   return (
     <BooksContext.Provider
-      value={{ books, load, addBook, editBook, deleteBook, getBooks }}
+      value={{
+        books,
+        load,
+        addBook,
+        editBook,
+        deleteBook,
+        getBooks,
+        mostRented,
+      }}
     >
       {children}
     </BooksContext.Provider>
