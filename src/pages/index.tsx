@@ -122,7 +122,7 @@ const Dashboard: NextPage = () => {
         sx={{
           textAlign: "center",
           backgroundColor: "var(--blue-g0)",
-          width: "30%",
+          width: "20%",
           height: "15rem",
           marginLeft: "2rem",
           borderRadius: "0.5rem",
@@ -177,7 +177,7 @@ const Dashboard: NextPage = () => {
               }}
               secondaryTypographyProps={{ color: "white" }}
               primary="Rental Records"
-              secondary={rentals.length}
+              secondary={`total:${rentals.length}`}
             />
           </ListItem>
           <Divider
@@ -198,7 +198,7 @@ const Dashboard: NextPage = () => {
               }}
               secondaryTypographyProps={{ color: "white" }}
               primary="User Records"
-              secondary={books.length}
+              secondary={`total:${users.length}`}
             />
           </ListItem>
           <Divider
@@ -219,7 +219,7 @@ const Dashboard: NextPage = () => {
               }}
               secondaryTypographyProps={{ color: "white" }}
               primary="Publisher Records"
-              secondary={publishers.length}
+              secondary={`total:${publishers.length}`}
             />
           </ListItem>
         </List>
