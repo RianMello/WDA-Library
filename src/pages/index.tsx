@@ -35,7 +35,6 @@ const Dashboard: NextPage = () => {
   }, [load]);
   const topFiveRenteds = mostRented.slice(0, 5);
   const leastRentedBooks = mostRented.slice(-7, -2);
-  console.log(mostRented);
 
   const data = {
     labels: topFiveRenteds.map((book) => book.nome),

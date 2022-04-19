@@ -11,6 +11,7 @@ import { MdEditNote, MdDeleteSweep } from "react-icons/md";
 import { FormBook } from "../components/Form/BookForm";
 import { Book } from "../interfaces/ResponseAPI";
 import { Button, CircularProgress, Tooltip, Typography } from "@mui/material";
+import { useRental } from "../hooks/useRental";
 
 const Books = () => {
   const { load, books, deleteBook, getBooks } = useBook();

@@ -13,9 +13,6 @@ import { styled } from "@mui/system";
 import { useState } from "react";
 import { TableFilter } from "./Filter";
 
-import Modal from "../Modal";
-import ModalComponent from "../Modal";
-import { FormBook } from "../Form/BookForm";
 import { Book, Publisher, Rental, User } from "../../interfaces/ResponseAPI";
 import { Button, Typography } from "@mui/material";
 import { ButtonAdd } from "../Buttons/ButtonAdd";
@@ -106,6 +103,9 @@ const Table = ({ columns, data, actionAdd }: any) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  // console.log("Tabela aqui ò ---------");
+  // console.log(columns);
+  // console.log(data);
   const {
     getTableProps,
     getTableBodyProps,

@@ -3,6 +3,8 @@ import { RentalContext } from '../contexts/RentalsContext'
 
 export function useRental() {
     const context = useContext(RentalContext)
-    const { load, rentals } = context
-    return { load, rentals }
+    const { load, rentals, getRentals, addRental, editRental, deleteRental } = context
+    return {
+        load, rentals, getRentals, addRental, editRental, deleteRental
+    }
 }
