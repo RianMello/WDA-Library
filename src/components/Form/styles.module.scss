@@ -176,6 +176,11 @@
         margin: 0.25rem;
         margin-top: 1rem;
 
+        #standard-select{
+            color: white;
+            
+        }
+
     }
     .control-modalForm{
         display: flex;
@@ -193,12 +198,22 @@
 
 .inputStyle{
     color: white;
-
+    label{
+        color: white;
+        text-align: right;
+    }
+    
     input{
         box-shadow: inset 0 -1.5px 0 white;
         color: white;
+        text-align: right;
+        label{
+            color: white;
+            text-align: right;
+        }
+        svg{
+            color: white;
+        }
     }
-    label{
-        color: white;
-    }
+
 }

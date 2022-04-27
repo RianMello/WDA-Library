@@ -101,7 +101,7 @@ export function FormUser({ user, onFinish }: FormUserProps) {
         <TextField
           className={styles.inputStyle}
           onChange={formik.handleChange}
-          error={formik.touched.nome && Boolean(formik.errors.nome)}
+          error={formik.touched.cidade && Boolean(formik.errors.cidade)}
           id="standard-error-helper-text"
           label="City :"
           defaultValue={formik.values.cidade}

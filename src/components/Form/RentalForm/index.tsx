@@ -18,10 +18,10 @@ import { useUser } from "../../../hooks/useUser";
 import { useBook } from "../../../hooks/useBook";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { SelectBook } from "./bookSelector";
 import { TiCancel } from "react-icons/ti";
 import { IoMdSave } from "react-icons/io";
 
+import { useSnackbar, VariantType } from "notistack";
 interface FormRentalProps {
   onFinish: (success: boolean) => void;
   rental: Rental;
@@ -32,13 +32,11 @@ interface initialProps {
   data_aluguel: string;
   data_previsao: string;
   data_devolucao: string;
-  user_id: number;
-  book_id: number;
   usuario_id: User;
   livro_id: Book;
 }
 
-export function FormRental({ onFinish, rental }: FormRentalProps) {
+export function FormRental({ onFinish }: FormRentalProps) {
   const { addRental } = useRental();
   const { users } = useUser();
   const { available } = useBook();
@@ -46,8 +44,7 @@ export function FormRental({ onFinish, rental }: FormRentalProps) {
   const [user, setUser] = useState(users[0]);
   const [book, setBook] = useState({} as Book);
 
-  console.log("Livro para o select");
-  console.log(book);
+  const { enqueueSnackbar } = useSnackbar();
 
   const schema = Yup.object().shape({
     id: Yup.number(),
@@ -80,24 +77,50 @@ export function FormRental({ onFinish, rental }: FormRentalProps) {
     }).required("Você precisa informar o livro alugado"),
   });
 
-  const handleUserChange = (user: User) => {
-    setUser(user);
+  const showMessage = (message: string, status: VariantType) => {
+    enqueueSnackbar(message, {
+      variant: status,
+      preventDuplicate: true,
+    });
   };
-  const handleBookChange = (book: Book) => {
-    setBook(book);
+
+  const handleUserChange = (id: any) => {
+    users.map((user: User) => {
+      if (id === user.id) {
+        setUser(user);
+        return;
+      }
+    });
+  };
+  const handleBookChange = (id: any, e: any) => {
+    console.log(e);
+    available.map((book: Book) => {
+      if (id == book.id) {
+        setBook(book);
+        return;
+      }
+    });
   };
 
   const today = dayjs().format("YYYY-MM-DD");
 
-  const handleSubmit = (values: initialProps) => {
+  const handleSubmit = async (values: initialProps) => {
     const rentalFinished: Rental = {
       id: values.id,
-      data_aluguel: values.data_aluguel,
+      data_aluguel: today,
       data_previsao: values.data_previsao,
       data_devolucao: values.data_devolucao,
       usuario_id: user,
       livro_id: book,
     };
+
+    try {
+      await addRental(rentalFinished as Rental, onFinish);
+      showMessage("Aluguel cadastrado com sucesso!", "success");
+    } catch (err) {
+      showMessage("Não foi possivel cadastrar o aluguel", "error");
+    }
+
     addRental(rentalFinished as Rental, onFinish);
     console.log(rentalFinished);
     return;
@@ -108,8 +131,6 @@ export function FormRental({ onFinish, rental }: FormRentalProps) {
     data_aluguel: "",
     data_previsao: "",
     data_devolucao: "",
-    user_id: 0,
-    book_id: 0,
     usuario_id: user,
     livro_id: book,
   };
@@ -121,31 +142,72 @@ export function FormRental({ onFinish, rental }: FormRentalProps) {
   });
   return (
     <form className={styles.formContainerStyle} onSubmit={formik.handleSubmit}>
-      {/* <div className={styles["input-group"]}>
-        <TextField
-          onChange={formik.handleChange}
-          className={styles.inputStyle}
-          id="standard-error-helper-text"
-          defaultValue={formik.values.usuario_id?.nome}
-          label="Responsible :"
-          helperText="Required Field."
-          variant="standard"
-        />
-      </div> */}
       <div className={styles["input-group"]}>
-        {/* <SelectBook books={available} bookChange={handleBookChange} /> */}
         <Select
-          id="book_id"
-          label="Book :"
-          name="book_id"
-          value={formik.values.book_id ? formik.values.book_id : ""}
-          error={formik.touched.book_id && Boolean(formik.errors.book_id)}
+          inputProps={{ color: "white" }}
+          labelId="demo-simple-select-standard-label"
+          id="user_id"
+          label="User :"
+          name="usuario_id"
           variant="filled"
           sx={{ borderBottom: "1px solid white", color: "white" }}
           defaultValue={"Select which book you want to rent"}
-          onChange={formik.handleChange}
+          onChange={(e) => handleUserChange(e.target.value)}
         >
           <MenuItem value=""></MenuItem>
+          {users.map((user) => {
+            return (
+              <MenuItem key={user.id} value={user.id}>
+                {user.nome}
+              </MenuItem>
+            );
+          })}
+        </Select>
+        {formik.errors.usuario_id && formik.touched.usuario_id ? (
+          <FormHelperText>Without label</FormHelperText>
+        ) : (
+          ""
+        )}
+      </div>
+      <div className={styles["input-group"]}>
+        <TextField
+          type="date"
+          onChange={formik.handleChange}
+          error={
+            formik.touched.data_previsao && Boolean(formik.errors.data_previsao)
+          }
+          className={styles.inputStyle}
+          id="standard-error-helper-text"
+          defaultValue={formik.values.data_previsao}
+          label="Data prevista para a Entrega :"
+          helperText="Required Field"
+          variant="standard"
+        />
+      </div>
+      <div className={styles["input-group"]}>
+        <TextField
+          select
+          onChange={(e) => handleBookChange(e.target.value, e)}
+          // SelectProps={{
+          //   error: formik.touched.livro_id && Boolean(formik.errors.livro_id),
+          //   color:
+          //     formik.touched.livro_id && Boolean(formik.errors.livro_id)
+          //       ? "error"
+          //       : "primary",
+          // }}
+          color={
+            formik.touched.livro_id && Boolean(formik.errors.livro_id)
+              ? "error"
+              : "primary"
+          }
+          value={formik.values.livro_id}
+          error={formik.touched.livro_id && Boolean(formik.errors.livro_id)}
+          className={styles.inputStyle}
+          id="standard-error-helper-text"
+          label="Livro Alugado :"
+          helperText={"Required Field."}
+          variant="standard"
+        >
           {available.map((book) => {
             return (
               <MenuItem key={book.id} value={book.id}>
@@ -153,12 +215,7 @@ export function FormRental({ onFinish, rental }: FormRentalProps) {
               </MenuItem>
             );
           })}
-        </Select>
-        {formik.errors.book_id && formik.touched.book_id ? (
-          <FormHelperText>Without label</FormHelperText>
-        ) : (
-          ""
-        )}
+        </TextField>
       </div>
       <div className={styles["control-modalForm"]}>
         <Button
@@ -166,7 +223,6 @@ export function FormRental({ onFinish, rental }: FormRentalProps) {
           color="error"
           sx={{
             fontWeight: "bold",
-            border: "1px solid var(--red)",
             backgroundColor: "var(--red)",
             color: "white",
             marginRight: "1rem",
@@ -183,7 +239,6 @@ export function FormRental({ onFinish, rental }: FormRentalProps) {
           color="success"
           sx={{
             fontWeight: "bold",
-            border: "1px solid #309E3A",
             backgroundColor: "#309E3A",
             color: "white",
             marginLeft: "1rem",

@@ -3,11 +3,19 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useBook } from "../hooks/useBook";
 import { useRental } from "../hooks/useRental";
-
+import { useUser } from "../hooks/useUser";
+import { usePublisher } from "../hooks/usePublisher";
 import styles from "./pages.module.scss";
 
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut, Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  CategoryScale,
+  Tooltip,
+  LinearScale,
+  BarElement,
+} from "chart.js";
 import { Box, CircularProgress, Divider, Typography } from "@mui/material";
 
 import List from "@mui/material/List";
@@ -15,12 +23,13 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import { MdSpaceDashboard } from "react-icons/md";
 import { FaCashRegister, FaUsers } from "react-icons/fa";
 import { GiBookshelf, GiNotebook } from "react-icons/gi";
-import { useUser } from "../hooks/useUser";
-import { usePublisher } from "../hooks/usePublisher";
-ChartJS.register(ArcElement, Tooltip, Legend);
+
+import { Inventory } from "../components/DashboardComp/Inventory";
+import { LastRental } from "../components/DashboardComp/LastRented";
+
+ChartJS.register(ArcElement, Tooltip, LinearScale, BarElement, CategoryScale);
 
 const Dashboard: NextPage = () => {
   const { rentals } = useRental();
@@ -34,42 +43,31 @@ const Dashboard: NextPage = () => {
     setLoading(load);
   }, [load]);
   const topFiveRenteds = mostRented.slice(0, 5);
-  const leastRentedBooks = mostRented.slice(-7, -2);
+
+  const options = {
+    indexAxis: "y" as const,
+    elements: {
+      bar: {
+        borderWidth: 1,
+      },
+    },
+    responsive: true,
+    plugins: {},
+  };
 
   const data = {
     labels: topFiveRenteds.map((book) => book.nome),
     datasets: [
       {
-        label: "",
+        label: "labels",
         data: topFiveRenteds.map((book) => book.totalalugado),
         backgroundColor: [
           "#0075FF",
-          "#0263d6",
-          "#024fab",
-          "#013d85",
-          "#002654",
+          "#026cec",
+          "#0260d3",
+          "#0051b4",
+          "#0151a1",
         ],
-        borderColor: ["#0075FF"],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const dataLast = {
-    labels: leastRentedBooks.map((book) => book.nome),
-    datasets: [
-      {
-        label: "",
-        data: leastRentedBooks.map((book) => book.totalalugado),
-        backgroundColor: [
-          "#eb4034",
-          "#c2352b",
-          "#8f251e",
-          "#591713",
-          "#360e0b",
-        ],
-        borderColor: ["#eb4034"],
-        borderWidth: 1,
       },
     ],
   };
@@ -79,161 +77,91 @@ const Dashboard: NextPage = () => {
       <Head>
         <title>Library-Dashboard</title>
       </Head>
+      <Box
+        sx={{
+          textAlign: "center",
+          width: "30%",
+          marginRight: "0.5rem",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            width: "100%",
+            height: "100%",
+            backgroundColor: "var(--blue-g0)",
+            borderRadius: "0.5rem",
+          }}
+        >
+          <Typography sx={{ fontWeight: "bold" }} variant="h4" component="h4">
+            Registros em Sistema
+          </Typography>
+          <Inventory />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            width: "100%",
+            height: "100%",
+            backgroundColor: "var(--blue-g0)",
+            marginTop: "1rem",
+            borderRadius: "0.5rem",
+          }}
+        >
+          <Typography
+            sx={{ fontWeight: "bold", marginTop: "1rem" }}
+            variant="h4"
+            component="h4"
+          >
+            Ultimos aluguéis feitos
+          </Typography>
+          <LastRental />
+        </Box>
+      </Box>
       <div className={styles.ChartContainer}>
         <Typography
           sx={{ fontWeight: "bold", width: "100%" }}
-          variant="h2"
-          component="h2"
+          variant="h4"
+          component="h4"
         >
-          Charts
+          Os Mais Alugados
         </Typography>
-        <Divider sx={{ backgroundColor: "var(--blue-g200)" }} />
+
+        <Divider
+          orientation="horizontal"
+          sx={{ backgroundColor: "var(--blue-g200)" }}
+          flexItem
+        />
+
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             width: "100%",
-            height: "100%",
           }}
         >
           <Box
             sx={{
-              width: "50%",
-              height: "100%",
+              width: "90%",
+              textAlign: "center",
+              marginLeft: "0.5rem",
             }}
           >
-            <Typography sx={{ padding: "1rem" }} variant="h4" component="h4">
-              Top Five Rented
-            </Typography>
             {loading ? (
               <>
                 laoding datas <CircularProgress />
               </>
             ) : (
-              <Doughnut data={data} />
-            )}
-          </Box>
-          <Box sx={{ width: "50%", height: "100%" }}>
-            <Typography sx={{ padding: "1rem" }} variant="h4" component="h4">
-              Last 5 Rented
-            </Typography>
-            {loading ? (
-              <>
-                laoding datas <CircularProgress />
-              </>
-            ) : (
-              <Doughnut data={dataLast} />
+              <Bar options={options} data={data} />
             )}
           </Box>
         </Box>
       </div>
-      <Box
-        sx={{
-          textAlign: "center",
-          backgroundColor: "var(--blue-g0)",
-          width: "20%",
-          height: "15rem",
-          marginLeft: "2rem",
-          borderRadius: "0.5rem",
-        }}
-      >
-        <Typography
-          sx={{ fontWeight: "bold", padding: "1rem" }}
-          variant="h4"
-          component="h4"
-        >
-          Inventory and Records
-        </Typography>
-        <List
-          sx={{
-            width: "100%",
-            maxWidth: "100%",
-            bgcolor: "var(--blue-g100)",
-            borderRadius: "0.5rem",
-          }}
-        >
-          <ListItem sx={{ fontSize: "" }}>
-            <ListItemAvatar>
-              <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
-                <GiBookshelf style={{ color: "var(--blue-icons)" }} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primaryTypographyProps={{
-                fontSize: "1.3rem",
-                fontWeight: "bold",
-              }}
-              secondaryTypographyProps={{ color: "white" }}
-              primary="Books"
-              secondary={`total:${books.length}`}
-            />
-          </ListItem>
-          <Divider
-            sx={{ backgroundColor: "var(--blue-g200)" }}
-            variant="inset"
-            component="li"
-          />
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
-                <FaCashRegister style={{ color: "var(--blue-icons)" }} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primaryTypographyProps={{
-                fontSize: "1.3rem",
-                fontWeight: "bold",
-              }}
-              secondaryTypographyProps={{ color: "white" }}
-              primary="Rental Records"
-              secondary={`total:${rentals.length}`}
-            />
-          </ListItem>
-          <Divider
-            sx={{ backgroundColor: "var(--blue-g200)" }}
-            variant="inset"
-            component="li"
-          />
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
-                <FaUsers style={{ color: "var(--blue-icons)" }} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primaryTypographyProps={{
-                fontSize: "1.3rem",
-                fontWeight: "bold",
-              }}
-              secondaryTypographyProps={{ color: "white" }}
-              primary="User Records"
-              secondary={`total:${users.length}`}
-            />
-          </ListItem>
-          <Divider
-            sx={{ backgroundColor: "var(--blue-g200)" }}
-            variant="inset"
-            component="li"
-          />
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar sx={{ backgroundColor: "var(--blue-g50)" }}>
-                <GiNotebook style={{ color: "var(--blue-icons)" }} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primaryTypographyProps={{
-                fontSize: "1.3rem",
-                fontWeight: "bold",
-              }}
-              secondaryTypographyProps={{ color: "white" }}
-              primary="Publisher Records"
-              secondary={`total:${publishers.length}`}
-            />
-          </ListItem>
-        </List>
-      </Box>
     </Box>
   );
 };

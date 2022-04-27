@@ -44,7 +44,6 @@ export function BooksProvider({ children }: BookProviderProps) {
       .then((res) => {
         setLoad(false);
         setBooks(res.data);
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }
@@ -55,7 +54,6 @@ export function BooksProvider({ children }: BookProviderProps) {
       .then((res) => {
         setLoad(false);
         setMostRented(res.data);
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }
@@ -66,7 +64,6 @@ export function BooksProvider({ children }: BookProviderProps) {
       .then((res) => {
         setLoad(false);
         setAvailable(res.data);
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }

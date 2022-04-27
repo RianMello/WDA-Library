@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from "axios";
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { Rental } from "../interfaces/ResponseAPI";
 import api from "../services/api";
-
+import dayjs from "dayjs";
 interface RentalProviderProps {
   children: ReactNode;
 }
@@ -14,6 +14,7 @@ interface RentalContextProps {
   addRental: (rental: Rental, onFinish: (success: boolean) => void) => void;
   editRental: (rental: Rental, onFinish: (success: boolean) => void) => void;
   deleteRental: (rental: Rental, onFinish: (success: boolean) => void) => void;
+  lastRentals: () => Rental[];
 }
 
 export const RentalContext = createContext({} as RentalContextProps);
@@ -32,7 +33,6 @@ export function RentalProvider({ children }: RentalProviderProps) {
       .then((res) => {
         setLoad(false);
         setRental(res.data);
-        console.log(res);
       })
       .catch((err) => {
         console.error(err);
@@ -75,9 +75,33 @@ export function RentalProvider({ children }: RentalProviderProps) {
       });
   }
 
+  function lastRentals() {
+    let last = rentals
+      .sort((a, b) => {
+        let dateA = new Date(Date.parse(a.data_aluguel));
+        let dateB = new Date(Date.parse(b.data_aluguel));
+        if (dateA > dateB) {
+          return -1;
+        } else if (dateA < dateB) {
+          return 1;
+        }
+        return 0;
+      })
+      .slice(0, 5);
+
+    return last;
+  }
   return (
     <RentalContext.Provider
-      value={{ load, rentals, getRentals, addRental, editRental, deleteRental }}
+      value={{
+        load,
+        rentals,
+        getRentals,
+        addRental,
+        editRental,
+        deleteRental,
+        lastRentals,
+      }}
     >
       {children}
     </RentalContext.Provider>

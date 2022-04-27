@@ -78,13 +78,7 @@ export default function Rentals() {
     []
   );
 
-  // const handleDataMount = () => {
-  //   return()
-  // }
-
   const data = useMemo(() => {
-    console.log("rentals data table: ");
-    console.log(rentals);
     return rentals.map((rent) => ({
       ...rent,
       data_devolucao:
